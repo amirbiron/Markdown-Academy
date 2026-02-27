@@ -159,6 +159,28 @@ async function seedLessonsIfEmpty(db: NonNullable<Awaited<ReturnType<typeof getD
   await _seedingPromise;
 }
 
+// סנכרון תוכן שיעורים - מעדכן שיעורים קיימים אם התוכן בקוד השתנה
+let _syncDone = false;
+async function syncLessonsContent(db: NonNullable<Awaited<ReturnType<typeof getDb>>>) {
+  if (_syncDone) return;
+  _syncDone = true;
+
+  try {
+    const existing = await db.select().from(lessons).orderBy(lessons.category, lessons.orderIndex);
+    for (const lesson of existing) {
+      const match = lessonsData.find(
+        (d) => d.category === lesson.category && d.orderIndex === lesson.orderIndex,
+      );
+      if (match && match.content !== lesson.content) {
+        await db.update(lessons).set({ content: match.content }).where(eq(lessons.id, lesson.id));
+      }
+    }
+  } catch (error) {
+    console.error("[Database] שגיאה בסנכרון תוכן שיעורים:", error);
+    _syncDone = false;
+  }
+}
+
 // Lesson queries
 export async function getAllLessons() {
   const db = await getDb();
@@ -170,6 +192,12 @@ export async function getAllLessons() {
   if (result.length === 0) {
     await seedLessonsIfEmpty(db);
     result = await db.select().from(lessons).orderBy(lessons.category, lessons.orderIndex);
+  } else {
+    // סנכרון תוכן - מעדכן שיעורים קיימים אם התוכן בקוד השתנה (רץ פעם אחת בהפעלה)
+    if (!_syncDone) {
+      await syncLessonsContent(db);
+      result = await db.select().from(lessons).orderBy(lessons.category, lessons.orderIndex);
+    }
   }
 
   return result;
