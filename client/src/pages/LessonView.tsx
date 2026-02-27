@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { trpc } from "@/lib/trpc";
 import { LOGIN_PATH } from "@/const";
 import { ArrowRight, CheckCircle2, CheckSquare, Code2, Lightbulb, Lock, AlertTriangle } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Link, useLocation, useRoute } from "wouter";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -156,17 +156,17 @@ export default function LessonView() {
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-xl font-bold">תרגול</h3>
               {lessonContent.tip && (
-                <Tooltip>
-                  <TooltipTrigger asChild>
+                <Popover>
+                  <PopoverTrigger asChild>
                     <Button size="sm" variant="ghost" className="gap-2">
                       <Lightbulb className="w-4 h-4 text-yellow-500" />
                       טיפ
                     </Button>
-                  </TooltipTrigger>
-                  <TooltipContent side="bottom" className="max-w-xs">
+                  </PopoverTrigger>
+                  <PopoverContent side="bottom" className="max-w-xs">
                     <p className="text-sm">{lessonContent.tip}</p>
-                  </TooltipContent>
-                </Tooltip>
+                  </PopoverContent>
+                </Popover>
               )}
             </div>
             <p className="text-sm text-muted-foreground mb-4">
