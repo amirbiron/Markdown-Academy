@@ -2,7 +2,7 @@ services:
   - type: web
     name: markdown-academy
     runtime: node
-    buildCommand: pnpm install && pnpm build
+    buildCommand: pnpm install && pnpm db:push && pnpm build
     startCommand: pnpm start
     envVars:
       - key: NODE_ENV
