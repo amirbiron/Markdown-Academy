@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { trpc } from "@/lib/trpc";
 import { LOGIN_PATH } from "@/const";
-import { ArrowRight, CheckCircle2, Code2, Lock } from "lucide-react";
+import { ArrowRight, CheckCircle2, CheckSquare, Code2, Lightbulb, Lock, AlertTriangle } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Link, useLocation, useRoute } from "wouter";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -31,6 +32,7 @@ export default function LessonView() {
 
   const utils = trpc.useUtils();
   const [editorValue, setEditorValue] = useState("");
+  const [showSolution, setShowSolution] = useState(false);
 
   if (authLoading || lessonLoading) {
     return (
@@ -145,11 +147,60 @@ export default function LessonView() {
 
           {/* Editor Panel */}
           <Card className="p-6 glass">
-            <h3 className="text-xl font-bold mb-4">תרגול</h3>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-bold">תרגול</h3>
+              {lessonContent.tip && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button size="sm" variant="ghost" className="gap-2">
+                      <Lightbulb className="w-4 h-4 text-yellow-500" />
+                      טיפ
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" className="max-w-xs">
+                    <p className="text-sm">{lessonContent.tip}</p>
+                  </TooltipContent>
+                </Tooltip>
+              )}
+            </div>
             <p className="text-sm text-muted-foreground mb-4">
               {lessonContent.exercise || "נסה לכתוב Markdown בעורך ותראה את התוצאה בזמן אמת"}
             </p>
             <MarkdownEditor value={editorValue} onChange={setEditorValue} />
+
+            {/* בדוק פתרון */}
+            {lessonContent.checkSolution && (
+              <div className="mt-4">
+                <Button
+                  onClick={() => setShowSolution(!showSolution)}
+                  variant="outline"
+                  className="w-full gap-2 hover:bg-primary/10 transition-colors"
+                >
+                  <CheckSquare className="w-4 h-4" />
+                  {showSolution ? "הסתר פתרון" : "בדוק פתרון"}
+                </Button>
+
+                {showSolution && (
+                  <div className="mt-3 p-4 rounded-lg border-2 bg-green-50 border-green-300 text-green-900">
+                    <p className="text-sm font-medium mb-2">פתרון לדוגמה:</p>
+                    <div className="prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: lessonContent.checkSolution }} />
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* שגיאות נפוצות */}
+            {lessonContent.commonMistakes && (
+              <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <div className="flex items-start gap-2">
+                  <AlertTriangle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="font-bold text-yellow-900 mb-2">שגיאות נפוצות</h4>
+                    <div className="text-sm text-yellow-800 prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: lessonContent.commonMistakes }} />
+                  </div>
+                </div>
+              </div>
+            )}
           </Card>
         </div>
 
