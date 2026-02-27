@@ -163,7 +163,7 @@ export default function LessonView() {
                       טיפ
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent side="bottom" className="max-w-xs">
+                  <PopoverContent side="bottom" className="max-w-xs bg-slate-800 text-white border-slate-700">
                     <p className="text-sm">{lessonContent.tip}</p>
                   </PopoverContent>
                 </Popover>
