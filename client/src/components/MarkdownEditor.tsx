@@ -1,9 +1,16 @@
-import Editor from "@monaco-editor/react";
+import { useRef, useEffect, useState } from "react";
+import { EditorView, keymap, placeholder, lineNumbers } from "@codemirror/view";
+import { EditorState } from "@codemirror/state";
+import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
+import { languages } from "@codemirror/language-data";
+import { defaultKeymap, indentWithTab } from "@codemirror/commands";
+import { search } from "@codemirror/search";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
-import { useState, useEffect } from "react";
+import rehypeHighlight from "rehype-highlight";
+import "highlight.js/styles/github.css";
 import mermaid from "mermaid";
 
 interface MarkdownEditorProps {
@@ -12,11 +19,101 @@ interface MarkdownEditorProps {
   height?: string;
 }
 
+/* ערכת נושא בהירה מותאמת ל-CodeMirror */
+const lightTheme = EditorView.theme({
+  "&": {
+    fontSize: "14px",
+    fontFamily: "Rubik, monospace",
+  },
+  ".cm-content": {
+    padding: "16px 0",
+    caretColor: "#000",
+  },
+  ".cm-gutters": {
+    backgroundColor: "transparent",
+    borderRight: "1px solid #e5e7eb",
+    color: "#9ca3af",
+  },
+  ".cm-activeLine": {
+    backgroundColor: "#f9fafb",
+  },
+  ".cm-activeLineGutter": {
+    backgroundColor: "#f9fafb",
+  },
+  "&.cm-focused .cm-selectionBackground, .cm-selectionBackground": {
+    backgroundColor: "#dbeafe",
+  },
+  "&.cm-focused": {
+    outline: "none",
+  },
+  ".cm-line": {
+    padding: "0 16px",
+  },
+});
+
 export default function MarkdownEditor({ value, onChange, height = "500px" }: MarkdownEditorProps) {
+  const editorRef = useRef<HTMLDivElement>(null);
+  const viewRef = useRef<EditorView | null>(null);
   const [mounted, setMounted] = useState(false);
 
+  /* callback שמעדכן את הstate בכל שינוי בעורך */
+  const onChangeRef = useRef(onChange);
+  onChangeRef.current = onChange;
+
+  /* extension שמאזין לשינויים ומעדכן את ה-state */
+  const handleChange = EditorView.updateListener.of((update) => {
+    if (update.docChanged) {
+      onChangeRef.current(update.state.doc.toString());
+    }
+  });
+
+  /* אתחול העורך */
   useEffect(() => {
+    if (!editorRef.current) return;
+
+    const state = EditorState.create({
+      doc: value,
+      extensions: [
+        lineNumbers(),
+        markdown({ base: markdownLanguage, codeLanguages: languages }),
+        EditorView.lineWrapping,
+        keymap.of([...defaultKeymap, indentWithTab]),
+        search(),
+        placeholder("כתוב כאן Markdown..."),
+        lightTheme,
+        handleChange,
+      ],
+    });
+
+    const view = new EditorView({
+      state,
+      parent: editorRef.current,
+    });
+
+    viewRef.current = view;
     setMounted(true);
+
+    return () => {
+      view.destroy();
+      viewRef.current = null;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  /* סנכרון ערך חיצוני – כשהvalue משתנה מבחוץ (לא מהעורך עצמו) */
+  useEffect(() => {
+    const view = viewRef.current;
+    if (!view) return;
+    const currentDoc = view.state.doc.toString();
+    if (currentDoc !== value) {
+      view.dispatch({
+        changes: { from: 0, to: currentDoc.length, insert: value },
+      });
+    }
+  }, [value]);
+
+  /* אתחול Mermaid */
+  useEffect(() => {
     mermaid.initialize({ startOnLoad: true, theme: "default" });
   }, []);
 
@@ -28,7 +125,7 @@ export default function MarkdownEditor({ value, onChange, height = "500px" }: Ma
     }
   }, [value, mounted]);
 
-  if (!mounted) {
+  if (!mounted && !editorRef.current) {
     return (
       <div className="grid grid-cols-2 gap-4" style={{ height }}>
         <div className="border rounded-lg bg-muted animate-pulse"></div>
@@ -39,36 +136,19 @@ export default function MarkdownEditor({ value, onChange, height = "500px" }: Ma
 
   return (
     <div className="grid lg:grid-cols-2 gap-4" style={{ height }}>
-      {/* Editor Panel - dir="ltr" נדרש כי Monaco Editor לא תומך ב-RTL שמגיע מאלמנט הורה */}
-      <div className="border rounded-lg overflow-hidden bg-card" dir="ltr">
+      {/* פאנל העורך */}
+      <div className="border rounded-lg overflow-hidden bg-card flex flex-col" dir="ltr">
         <div className="bg-muted px-4 py-2 text-sm font-medium border-b" dir="rtl">
           עורך Markdown
         </div>
-        <Editor
-          height={`calc(${height} - 40px)`}
-          defaultLanguage="markdown"
-          value={value}
-          onChange={(val) => onChange(val || "")}
-          theme="vs-light"
-          options={{
-            minimap: { enabled: false },
-            fontSize: 14,
-            lineNumbers: "on",
-            wordWrap: "on",
-            scrollBeyondLastLine: false,
-            automaticLayout: true,
-            padding: { top: 16, bottom: 16 },
-            renderWhitespace: "selection",
-            fontFamily: "Rubik, monospace",
-            unicodeHighlight: {
-              ambiguousCharacters: false,
-            },
-            contextmenu: false,
-          }}
+        <div
+          ref={editorRef}
+          className="flex-1 overflow-auto"
+          style={{ height: `calc(${height} - 40px)` }}
         />
       </div>
 
-      {/* Preview Panel */}
+      {/* פאנל תצוגה מקדימה */}
       <div className="border rounded-lg overflow-hidden bg-card">
         <div className="bg-muted px-4 py-2 text-sm font-medium border-b">
           תצוגה מקדימה
@@ -79,9 +159,8 @@ export default function MarkdownEditor({ value, onChange, height = "500px" }: Ma
         >
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
-            rehypePlugins={[rehypeRaw, rehypeSanitize]}
+            rehypePlugins={[rehypeRaw, rehypeSanitize, rehypeHighlight]}
             components={{
-              // Custom rendering for better RTL support
               h1: ({ children }) => <h1 className="text-3xl font-bold mb-4">{children}</h1>,
               h2: ({ children }) => <h2 className="text-2xl font-bold mb-3">{children}</h2>,
               h3: ({ children }) => <h3 className="text-xl font-bold mb-2">{children}</h3>,
@@ -92,7 +171,7 @@ export default function MarkdownEditor({ value, onChange, height = "500px" }: Ma
               code: ({ className, children, ...props }) => {
                 const isInline = !className;
                 const isMermaid = className === "language-mermaid";
-                
+
                 if (isMermaid) {
                   return (
                     <div className="mermaid my-4">
@@ -100,18 +179,30 @@ export default function MarkdownEditor({ value, onChange, height = "500px" }: Ma
                     </div>
                   );
                 }
-                
+
                 return isInline ? (
                   <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono" {...props}>
                     {children}
                   </code>
                 ) : (
-                  <code className={`${className} block bg-muted p-4 rounded-lg overflow-x-auto text-sm font-mono`} {...props}>
+                  <code
+                    className={`${className || ""} block overflow-x-auto text-sm font-mono`}
+                    style={{ whiteSpace: "pre", padding: 0 }}
+                    {...props}
+                  >
                     {children}
                   </code>
                 );
               },
-              pre: ({ children }) => <pre className="mb-4">{children}</pre>,
+              /* תיקון בעיית הפירמידה – pre שומר על הזחות נכונות */
+              pre: ({ children }) => (
+                <pre
+                  className="mb-4 bg-muted p-4 rounded-lg overflow-x-auto"
+                  style={{ whiteSpace: "pre", tabSize: 4 }}
+                >
+                  {children}
+                </pre>
+              ),
               blockquote: ({ children }) => (
                 <blockquote className="border-r-4 border-primary pr-4 py-2 mb-4 text-muted-foreground italic">
                   {children}
