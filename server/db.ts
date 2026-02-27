@@ -2,21 +2,14 @@ import { eq, and, desc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { InsertUser, users, lessons, userProgress, achievements, InsertLesson, InsertUserProgress, InsertAchievement } from "../drizzle/schema";
 import { ENV } from './_core/env';
+import { ensureSsl } from '../shared/db-url';
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
 function getConnectionUrl(): string | undefined {
   const raw = process.env.DATABASE_URL;
   if (!raw) return undefined;
-  try {
-    const url = new URL(raw);
-    if (!url.searchParams.has("ssl")) {
-      url.searchParams.set("ssl", '{"rejectUnauthorized":true}');
-    }
-    return url.toString();
-  } catch {
-    return raw;
-  }
+  return ensureSsl(raw);
 }
 
 export async function getDb() {
