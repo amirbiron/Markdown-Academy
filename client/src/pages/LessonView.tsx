@@ -2,7 +2,7 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { trpc } from "@/lib/trpc";
-import { getLoginUrl } from "@/const";
+import { LOGIN_PATH } from "@/const";
 import { ArrowRight, CheckCircle2, Code2, Lock } from "lucide-react";
 import { Link, useLocation, useRoute } from "wouter";
 import { useState } from "react";
@@ -53,7 +53,7 @@ export default function LessonView() {
             כדי לגשת לשיעורים, יש להתחבר למערכת.
           </p>
           <Button asChild size="lg">
-            <a href={getLoginUrl()}>התחברות</a>
+            <a href={LOGIN_PATH}>התחברות</a>
           </Button>
         </Card>
       </div>

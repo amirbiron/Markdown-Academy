@@ -1,14 +1,74 @@
-import { COOKIE_NAME } from "@shared/const";
+import { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
+import { sdk } from "./_core/sdk";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import * as db from "./db";
 
 export const appRouter = router({
   system: systemRouter,
   auth: router({
-    me: publicProcedure.query(opts => opts.ctx.user),
+    me: publicProcedure.query(opts => {
+      if (!opts.ctx.user) return null;
+      const { passwordHash, ...safeUser } = opts.ctx.user;
+      return safeUser;
+    }),
+
+    register: publicProcedure
+      .input(z.object({
+        email: z.string().email(),
+        password: z.string().min(6),
+        name: z.string().min(1),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        try {
+          const user = await sdk.registerUser(input.email, input.password, input.name);
+
+          const sessionToken = await sdk.createSessionToken(user.openId, {
+            name: user.name || "",
+            expiresInMs: ONE_YEAR_MS,
+          });
+
+          const cookieOptions = getSessionCookieOptions(ctx.req);
+          ctx.res.cookie(COOKIE_NAME, sessionToken, { ...cookieOptions, maxAge: ONE_YEAR_MS });
+
+          return { success: true } as const;
+        } catch (err: any) {
+          if (err.message === "EMAIL_EXISTS") {
+            throw new TRPCError({ code: "CONFLICT", message: "כתובת האימייל כבר רשומה במערכת" });
+          }
+          throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "שגיאה בהרשמה" });
+        }
+      }),
+
+    login: publicProcedure
+      .input(z.object({
+        email: z.string().email(),
+        password: z.string().min(1),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        try {
+          const user = await sdk.loginUser(input.email, input.password);
+
+          const sessionToken = await sdk.createSessionToken(user.openId, {
+            name: user.name || "",
+            expiresInMs: ONE_YEAR_MS,
+          });
+
+          const cookieOptions = getSessionCookieOptions(ctx.req);
+          ctx.res.cookie(COOKIE_NAME, sessionToken, { ...cookieOptions, maxAge: ONE_YEAR_MS });
+
+          return { success: true } as const;
+        } catch (err: any) {
+          if (err.message === "INVALID_CREDENTIALS") {
+            throw new TRPCError({ code: "UNAUTHORIZED", message: "אימייל או סיסמה שגויים" });
+          }
+          throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "שגיאה בהתחברות" });
+        }
+      }),
+
     logout: publicProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
