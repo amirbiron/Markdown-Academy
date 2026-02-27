@@ -6,7 +6,7 @@ import { LOGIN_PATH } from "@/const";
 import { ArrowRight, CheckCircle2, CheckSquare, Code2, Lightbulb, Lock, AlertTriangle } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Link, useLocation, useRoute } from "wouter";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import MarkdownEditor from "@/components/MarkdownEditor";
 
@@ -33,6 +33,12 @@ export default function LessonView() {
   const utils = trpc.useUtils();
   const [editorValue, setEditorValue] = useState("");
   const [showSolution, setShowSolution] = useState(false);
+
+  // איפוס מצב בעת מעבר בין שיעורים
+  useEffect(() => {
+    setShowSolution(false);
+    setEditorValue("");
+  }, [lessonId]);
 
   if (authLoading || lessonLoading) {
     return (
