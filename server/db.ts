@@ -1,4 +1,4 @@
-import { eq, and, desc } from "drizzle-orm";
+import { eq, and, desc, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { InsertUser, users, lessons, userProgress, achievements, InsertLesson, InsertUserProgress, InsertAchievement } from "../drizzle/schema";
 import { ENV } from './_core/env';
@@ -6,6 +6,9 @@ import { ensureSsl } from '../shared/db-url';
 import { lessonsData } from "./lessons-data";
 
 let _db: ReturnType<typeof drizzle> | null = null;
+
+// מונע זריעה מקבילית - אם כבר רץ תהליך זריעה, ננצל אותו
+let _seedingPromise: Promise<void> | null = null;
 
 function getConnectionUrl(): string | undefined {
   const raw = process.env.DATABASE_URL;
@@ -127,6 +130,35 @@ export async function setUserRole(email: string, role: "user" | "admin"): Promis
   return (result[0] as any).affectedRows > 0;
 }
 
+// זריעת שיעורים בתוך טרנזקציה - אטומי ובטוח מפני race conditions
+async function seedLessonsIfEmpty(db: NonNullable<Awaited<ReturnType<typeof getDb>>>) {
+  if (_seedingPromise) {
+    await _seedingPromise;
+    return;
+  }
+
+  _seedingPromise = (async () => {
+    try {
+      await db.transaction(async (tx) => {
+        // בדיקה כפולה בתוך הטרנזקציה - למקרה שבקשה אחרת כבר זרעה
+        const existing = await tx.select({ count: sql<number>`count(*)` }).from(lessons);
+        if (existing[0].count > 0) return;
+
+        for (const lesson of lessonsData) {
+          await tx.insert(lessons).values(lesson);
+        }
+        console.log(`[Database] זריעה אוטומטית של ${lessonsData.length} שיעורים`);
+      });
+    } catch (error) {
+      console.error("[Database] שגיאה בזריעת שיעורים:", error);
+    } finally {
+      _seedingPromise = null;
+    }
+  })();
+
+  await _seedingPromise;
+}
+
 // Lesson queries
 export async function getAllLessons() {
   const db = await getDb();
@@ -136,15 +168,8 @@ export async function getAllLessons() {
 
   // אם טבלת השיעורים ריקה, נזרע אותה אוטומטית
   if (result.length === 0) {
-    try {
-      for (const lesson of lessonsData) {
-        await db.insert(lessons).values(lesson);
-      }
-      console.log(`[Database] זריעה אוטומטית של ${lessonsData.length} שיעורים`);
-      result = await db.select().from(lessons).orderBy(lessons.category, lessons.orderIndex);
-    } catch (error) {
-      console.error("[Database] שגיאה בזריעת שיעורים:", error);
-    }
+    await seedLessonsIfEmpty(db);
+    result = await db.select().from(lessons).orderBy(lessons.category, lessons.orderIndex);
   }
 
   return result;
