@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { trpc } from "@/lib/trpc";
-import { getLoginUrl } from "@/const";
+import { LOGIN_PATH } from "@/const";
 import { ArrowRight, BookOpen, CheckCircle2, Code2, Lock } from "lucide-react";
 import { Link, useLocation } from "wouter";
 
@@ -37,7 +37,7 @@ export default function Lessons() {
             כדי לגשת לשיעורים ולעקוב אחרי ההתקדמות שלך, יש להתחבר למערכת.
           </p>
           <Button asChild size="lg">
-            <a href={getLoginUrl()}>התחברות</a>
+            <a href={LOGIN_PATH}>התחברות</a>
           </Button>
         </Card>
       </div>

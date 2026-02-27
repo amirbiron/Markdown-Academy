@@ -11,9 +11,5 @@ services:
         sync: false
       - key: JWT_SECRET
         generateValue: true
-      - key: VITE_APP_ID
-        sync: false
-      - key: OAUTH_SERVER_URL
-        sync: false
-      - key: OWNER_OPEN_ID
+      - key: OWNER_EMAIL
         sync: false

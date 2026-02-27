@@ -7,6 +7,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import Lessons from "./pages/Lessons";
 import LessonView from "./pages/LessonView";
+import Login from "./pages/Login";
 import Sandbox from "./pages/Sandbox";
 import Achievements from "./pages/Achievements";
 
@@ -14,6 +15,7 @@ function Router() {
   return (
     <Switch>
       <Route path={"/"} component={Home} />
+      <Route path={"/login"} component={Login} />
       <Route path={"/lessons"} component={Lessons} />
       <Route path={"/lesson/:id"} component={LessonView} />
       <Route path={"/sandbox"} component={Sandbox} />

@@ -1,7 +1,6 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { getLoginUrl } from "@/const";
 import { BookOpen, Code2, Sparkles, Trophy, Zap } from "lucide-react";
 import { Link } from "wouter";
 
@@ -35,9 +34,9 @@ export default function Home() {
                 <span className="text-sm text-muted-foreground">שלום, {user?.name || "משתמש"}!</span>
               </>
             ) : (
-              <Button asChild>
-                <a href={getLoginUrl()}>התחברות</a>
-              </Button>
+              <Link href="/login">
+                <Button>התחברות</Button>
+              </Link>
             )}
           </div>
         </nav>
@@ -67,12 +66,12 @@ export default function Home() {
                 </Button>
               </Link>
             ) : (
-              <Button size="lg" className="text-lg px-8" asChild>
-                <a href={getLoginUrl()}>
+              <Link href="/login">
+                <Button size="lg" className="text-lg px-8">
                   <Zap className="w-5 h-5 ml-2" />
                   התחל ללמוד עכשיו
-                </a>
-              </Button>
+                </Button>
+              </Link>
             )}
             <Link href="/sandbox">
               <Button size="lg" variant="outline" className="text-lg px-8">
@@ -130,9 +129,9 @@ export default function Home() {
                 </Button>
               </Link>
             ) : (
-              <Button size="lg" className="text-lg px-12" asChild>
-                <a href={getLoginUrl()}>התחל בחינם</a>
-              </Button>
+              <Link href="/login">
+                <Button size="lg" className="text-lg px-12">התחל בחינם</Button>
+              </Link>
             )}
           </Card>
         </div>
@@ -141,7 +140,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="container py-8 mt-20 border-t">
         <div className="text-center text-sm text-muted-foreground">
-          <p>© 2026 Markdown Academy. כל הזכויות שמורות.</p>
+          <p>&copy; 2026 Markdown Academy. כל הזכויות שמורות.</p>
         </div>
       </footer>
     </div>

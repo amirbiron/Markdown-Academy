@@ -2,7 +2,7 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { trpc } from "@/lib/trpc";
-import { getLoginUrl } from "@/const";
+import { LOGIN_PATH } from "@/const";
 import { Award, Code2, Lock, Sparkles, Star, Trophy, Zap } from "lucide-react";
 import { Link } from "wouter";
 
@@ -54,7 +54,7 @@ export default function Achievements() {
             כדי לראות את ההישגים שלך, יש להתחבר למערכת.
           </p>
           <Button asChild size="lg">
-            <a href={getLoginUrl()}>התחברות</a>
+            <a href={LOGIN_PATH}>התחברות</a>
           </Button>
         </Card>
       </div>
