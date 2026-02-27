@@ -5,10 +5,26 @@ import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
+function getConnectionUrl(): string | undefined {
+  const raw = process.env.DATABASE_URL;
+  if (!raw) return undefined;
+  try {
+    const url = new URL(raw);
+    if (!url.searchParams.has("ssl")) {
+      url.searchParams.set("ssl", '{"rejectUnauthorized":true}');
+    }
+    return url.toString();
+  } catch {
+    return raw;
+  }
+}
+
 export async function getDb() {
-  if (!_db && process.env.DATABASE_URL) {
+  if (!_db) {
+    const connUrl = getConnectionUrl();
+    if (!connUrl) return null;
     try {
-      _db = drizzle(process.env.DATABASE_URL);
+      _db = drizzle(connUrl);
     } catch (error) {
       console.warn("[Database] Failed to connect:", error);
       _db = null;
