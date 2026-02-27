@@ -60,9 +60,12 @@ export default function MarkdownEditor({ value, onChange, height = "500px" }: Ma
   const onChangeRef = useRef(onChange);
   onChangeRef.current = onChange;
 
+  /* דגל שמונע קריאה חוזרת ל-onChange כשהעדכון מגיע מבחוץ (לא מהמשתמש) */
+  const isExternalUpdate = useRef(false);
+
   /* extension שמאזין לשינויים ומעדכן את ה-state */
   const handleChange = EditorView.updateListener.of((update) => {
-    if (update.docChanged) {
+    if (update.docChanged && !isExternalUpdate.current) {
       onChangeRef.current(update.state.doc.toString());
     }
   });
@@ -108,9 +111,11 @@ export default function MarkdownEditor({ value, onChange, height = "500px" }: Ma
     if (!view) return;
     const currentDoc = view.state.doc.toString();
     if (currentDoc !== value) {
+      isExternalUpdate.current = true;
       view.dispatch({
         changes: { from: 0, to: currentDoc.length, insert: value },
       });
+      isExternalUpdate.current = false;
     }
   }, [value]);
 
