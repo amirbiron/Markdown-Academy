@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import { EditorView, keymap, placeholder, lineNumbers } from "@codemirror/view";
+import { EditorView, keymap, placeholder, lineNumbers, highlightActiveLine, highlightActiveLineGutter } from "@codemirror/view";
 import { EditorState } from "@codemirror/state";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { languages } from "@codemirror/language-data";
@@ -75,6 +75,8 @@ export default function MarkdownEditor({ value, onChange, height = "500px" }: Ma
       doc: value,
       extensions: [
         lineNumbers(),
+        highlightActiveLine(),
+        highlightActiveLineGutter(),
         markdown({ base: markdownLanguage, codeLanguages: languages }),
         EditorView.lineWrapping,
         keymap.of([...defaultKeymap, indentWithTab]),
@@ -125,18 +127,9 @@ export default function MarkdownEditor({ value, onChange, height = "500px" }: Ma
     }
   }, [value, mounted]);
 
-  if (!mounted && !editorRef.current) {
-    return (
-      <div className="grid grid-cols-2 gap-4" style={{ height }}>
-        <div className="border rounded-lg bg-muted animate-pulse"></div>
-        <div className="border rounded-lg bg-muted animate-pulse"></div>
-      </div>
-    );
-  }
-
   return (
     <div className="grid lg:grid-cols-2 gap-4" style={{ height }}>
-      {/* פאנל העורך */}
+      {/* פאנל העורך – ה-ref חייב תמיד להתרנדר כדי שה-useEffect יאתחל את CodeMirror */}
       <div className="border rounded-lg overflow-hidden bg-card flex flex-col" dir="ltr">
         <div className="bg-muted px-4 py-2 text-sm font-medium border-b" dir="rtl">
           עורך Markdown
