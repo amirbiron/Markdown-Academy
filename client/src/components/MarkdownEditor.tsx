@@ -39,9 +39,9 @@ export default function MarkdownEditor({ value, onChange, height = "500px" }: Ma
 
   return (
     <div className="grid lg:grid-cols-2 gap-4" style={{ height }}>
-      {/* Editor Panel */}
-      <div className="border rounded-lg overflow-hidden bg-card">
-        <div className="bg-muted px-4 py-2 text-sm font-medium border-b">
+      {/* Editor Panel - dir="ltr" נדרש כי Monaco Editor לא תומך ב-RTL שמגיע מאלמנט הורה */}
+      <div className="border rounded-lg overflow-hidden bg-card" dir="ltr">
+        <div className="bg-muted px-4 py-2 text-sm font-medium border-b" dir="rtl">
           עורך Markdown
         </div>
         <Editor
@@ -63,6 +63,7 @@ export default function MarkdownEditor({ value, onChange, height = "500px" }: Ma
             unicodeHighlight: {
               ambiguousCharacters: false,
             },
+            contextmenu: false,
           }}
         />
       </div>
