@@ -85,6 +85,21 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
+/** INSERT בלבד — זורק שגיאה אם email/openId כבר קיים */
+export async function insertUser(user: InsertUser): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  await db.insert(users).values({
+    openId: user.openId,
+    name: user.name ?? null,
+    email: user.email ?? null,
+    passwordHash: user.passwordHash ?? null,
+    loginMethod: user.loginMethod ?? null,
+    lastSignedIn: user.lastSignedIn ?? new Date(),
+  });
+}
+
 export async function getUserByEmail(email: string) {
   const db = await getDb();
   if (!db) return undefined;

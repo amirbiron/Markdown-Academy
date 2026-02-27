@@ -139,7 +139,7 @@ class AuthService {
     const openId = nanoid();
 
     try {
-      await db.upsertUser({
+      await db.insertUser({
         openId,
         name,
         email,
@@ -148,7 +148,7 @@ class AuthService {
         lastSignedIn: new Date(),
       });
     } catch (err: any) {
-      // אילוץ unique ברמת ה-DB תופס race condition
+      // אילוץ unique ברמת ה-DB תופס race condition על email כפול
       if (err.code === "ER_DUP_ENTRY" || err.message?.includes("Duplicate")) {
         throw new Error("EMAIL_EXISTS");
       }
