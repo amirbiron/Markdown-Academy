@@ -35,7 +35,12 @@ function verifyPassword(password: string, hash: string): Promise<boolean> {
     if (!salt || !key) return resolve(false);
     scrypt(password, salt, 64, (err, derivedKey) => {
       if (err) return reject(err);
-      resolve(timingSafeEqual(Buffer.from(key, "hex"), derivedKey));
+      try {
+        resolve(timingSafeEqual(Buffer.from(key, "hex"), derivedKey));
+      } catch {
+        // timingSafeEqual זורק RangeError אם הבאפרים לא באותו אורך (hash פגום)
+        resolve(false);
+      }
     });
   });
 }
@@ -133,14 +138,22 @@ class AuthService {
     const { nanoid } = await import("nanoid");
     const openId = nanoid();
 
-    await db.upsertUser({
-      openId,
-      name,
-      email,
-      passwordHash,
-      loginMethod: "email",
-      lastSignedIn: new Date(),
-    });
+    try {
+      await db.upsertUser({
+        openId,
+        name,
+        email,
+        passwordHash,
+        loginMethod: "email",
+        lastSignedIn: new Date(),
+      });
+    } catch (err: any) {
+      // אילוץ unique ברמת ה-DB תופס race condition
+      if (err.code === "ER_DUP_ENTRY" || err.message?.includes("Duplicate")) {
+        throw new Error("EMAIL_EXISTS");
+      }
+      throw err;
+    }
 
     const user = await db.getUserByOpenId(openId);
     if (!user) throw new Error("Failed to create user");
