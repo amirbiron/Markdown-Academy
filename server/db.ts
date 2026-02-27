@@ -3,6 +3,7 @@ import { drizzle } from "drizzle-orm/mysql2";
 import { InsertUser, users, lessons, userProgress, achievements, InsertLesson, InsertUserProgress, InsertAchievement } from "../drizzle/schema";
 import { ENV } from './_core/env';
 import { ensureSsl } from '../shared/db-url';
+import { lessonsData } from "./lessons-data";
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -130,8 +131,22 @@ export async function setUserRole(email: string, role: "user" | "admin"): Promis
 export async function getAllLessons() {
   const db = await getDb();
   if (!db) return [];
-  
-  const result = await db.select().from(lessons).orderBy(lessons.category, lessons.orderIndex);
+
+  let result = await db.select().from(lessons).orderBy(lessons.category, lessons.orderIndex);
+
+  // אם טבלת השיעורים ריקה, נזרע אותה אוטומטית
+  if (result.length === 0) {
+    try {
+      for (const lesson of lessonsData) {
+        await db.insert(lessons).values(lesson);
+      }
+      console.log(`[Database] זריעה אוטומטית של ${lessonsData.length} שיעורים`);
+      result = await db.select().from(lessons).orderBy(lessons.category, lessons.orderIndex);
+    } catch (error) {
+      console.error("[Database] שגיאה בזריעת שיעורים:", error);
+    }
+  }
+
   return result;
 }
 
