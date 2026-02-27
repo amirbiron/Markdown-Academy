@@ -108,6 +108,15 @@ export async function getUserByEmail(email: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
+/** עדכון role של משתמש לפי email */
+export async function setUserRole(email: string, role: "user" | "admin"): Promise<boolean> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const result = await db.update(users).set({ role }).where(eq(users.email, email));
+  return (result[0] as any).affectedRows > 0;
+}
+
 // Lesson queries
 export async function getAllLessons() {
   const db = await getDb();
