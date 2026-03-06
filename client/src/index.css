@@ -239,7 +239,7 @@
   
   /* Playfair Display - כותרות פרימיום */
   .font-playfair {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Playfair Display', 'Rubik', sans-serif;
   }
 
   /* Glass morphism effect */
