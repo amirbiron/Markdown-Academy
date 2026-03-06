@@ -116,6 +116,9 @@
 
 /* Toolbox page — גיסט dark design system (scoped) */
 .toolbox-dark {
+  color: var(--foreground);
+  background-color: var(--background);
+
   --background: oklch(0.13 0.01 270);       /* #0f0f23 */
   --card: oklch(0.18 0.025 250);            /* #16213e */
   --card-foreground: oklch(0.93 0.005 90);  /* #eee */
