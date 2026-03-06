@@ -73,7 +73,7 @@ function SidebarContent({
 
               return (
                 <AccordionItem key={cat} value={cat}>
-                  <AccordionTrigger className="px-2 text-sm hover:no-underline">
+                  <AccordionTrigger className="px-2 text-sm text-right hover:no-underline">
                     <span className="flex items-center gap-2">
                       <CatIcon className="h-4 w-4 text-muted-foreground" />
                       {info.label}
