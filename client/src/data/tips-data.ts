@@ -44,10 +44,13 @@ export const tipsData: Tip[] = [
 
 אפשר גם לשלב עם **==הדגשה כפולה==** לאפקט חזק יותר.
 
-> **טיפ:** לא כל הפרסרים תומכים בסינטקס הזה. הוא נפוץ ב-Markdown-it ו-Obsidian.
+אפשר גם להשתמש בתגית HTML: <mark>טקסט מסומן עם mark</mark>
+
+> **טיפ:** הסינטקס \`==טקסט==\` נפוץ ב-Markdown-it ו-Obsidian. תגית \`<mark>\` היא HTML סטנדרטי.
 `,
     injectSnippets: [
-      { label: "Marker", snippet: "==טקסט מסומן==", cursorOffset: 2 },
+      { label: "==Marker==", snippet: "==טקסט מסומן==", cursorOffset: 2 },
+      { label: "<mark>", snippet: "<mark>טקסט מסומן</mark>", cursorOffset: 6 },
     ],
   },
   {
