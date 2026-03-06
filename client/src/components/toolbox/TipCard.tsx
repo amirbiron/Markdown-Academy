@@ -28,7 +28,7 @@ export default function TipCard({ tip, onSelect }: TipCardProps) {
 
   return (
     <Card
-      className="cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:shadow-lg break-inside-avoid mb-4 group"
+      className="cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:shadow-lg break-inside-avoid mb-4 group toolbox-card"
       onClick={() => onSelect(tip)}
     >
       <CardHeader className="pb-2">
