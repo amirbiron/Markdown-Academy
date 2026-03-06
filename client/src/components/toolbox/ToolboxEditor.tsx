@@ -58,6 +58,7 @@ export default function ToolboxEditor({ value, onChange, injectSnippets }: Toolb
         onChange={onChange}
         height="calc(100vh - 340px)"
         editorViewRef={editorViewRef}
+        darkMode
       />
     </div>
   );

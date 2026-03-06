@@ -18,6 +18,7 @@ interface MarkdownEditorProps {
   onChange: (value: string) => void;
   height?: string;
   editorViewRef?: React.MutableRefObject<EditorView | null>;
+  darkMode?: boolean;
 }
 
 /* ערכת נושא בהירה מותאמת ל-CodeMirror */
@@ -52,7 +53,39 @@ const lightTheme = EditorView.theme({
   },
 });
 
-export default function MarkdownEditor({ value, onChange, height = "500px", editorViewRef }: MarkdownEditorProps) {
+/* ערכת נושא כהה מותאמת ל-CodeMirror */
+const darkTheme = EditorView.theme({
+  "&": {
+    fontSize: "14px",
+    fontFamily: "Rubik, monospace",
+  },
+  ".cm-content": {
+    padding: "16px 0",
+    caretColor: "#e5e7eb",
+  },
+  ".cm-gutters": {
+    backgroundColor: "transparent",
+    borderRight: "1px solid oklch(0.40 0.04 230)",
+    color: "#6b7280",
+  },
+  ".cm-activeLine": {
+    backgroundColor: "rgba(255, 255, 255, 0.05)",
+  },
+  ".cm-activeLineGutter": {
+    backgroundColor: "rgba(255, 255, 255, 0.05)",
+  },
+  "&.cm-focused .cm-selectionBackground, .cm-selectionBackground": {
+    backgroundColor: "rgba(59, 130, 246, 0.3)",
+  },
+  "&.cm-focused": {
+    outline: "none",
+  },
+  ".cm-line": {
+    padding: "0 16px",
+  },
+}, { dark: true });
+
+export default function MarkdownEditor({ value, onChange, height = "500px", editorViewRef, darkMode = false }: MarkdownEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<EditorView | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -86,7 +119,7 @@ export default function MarkdownEditor({ value, onChange, height = "500px", edit
         keymap.of([...defaultKeymap, indentWithTab]),
         search(),
         placeholder("כתוב כאן Markdown..."),
-        lightTheme,
+        darkMode ? darkTheme : lightTheme,
         handleChange,
       ],
     });
@@ -106,7 +139,7 @@ export default function MarkdownEditor({ value, onChange, height = "500px", edit
       if (editorViewRef) editorViewRef.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [darkMode]);
 
   /* סנכרון ערך חיצוני – כשהvalue משתנה מבחוץ (לא מהעורך עצמו) */
   useEffect(() => {
@@ -124,8 +157,8 @@ export default function MarkdownEditor({ value, onChange, height = "500px", edit
 
   /* אתחול Mermaid */
   useEffect(() => {
-    mermaid.initialize({ startOnLoad: true, theme: "default" });
-  }, []);
+    mermaid.initialize({ startOnLoad: true, theme: darkMode ? "dark" : "default" });
+  }, [darkMode]);
 
   useEffect(() => {
     if (mounted && value.includes("```mermaid")) {
@@ -155,7 +188,7 @@ export default function MarkdownEditor({ value, onChange, height = "500px", edit
           תצוגה מקדימה
         </div>
         <div
-          className="p-6 overflow-auto prose prose-sm max-w-none"
+          className="p-6 overflow-auto prose prose-sm max-w-none text-foreground"
           style={{ height: `calc(${height} - 40px)` }}
         >
           <ReactMarkdown
