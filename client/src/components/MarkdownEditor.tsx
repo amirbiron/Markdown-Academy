@@ -157,7 +157,7 @@ export default function MarkdownEditor({ value, onChange, height = "500px", edit
     navigator.clipboard.writeText(value).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
-    });
+    }).catch(() => {});
   }
 
   /* callback שמעדכן את הstate בכל שינוי בעורך */
