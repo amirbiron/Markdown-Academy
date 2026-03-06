@@ -31,6 +31,7 @@ const customSanitizeSchema = {
   attributes: {
     ...defaultSchema.attributes,
     div: [...(defaultSchema.attributes?.div || []), "className", "class", "dataType"],
+    blockquote: [...(defaultSchema.attributes?.blockquote || []), "className", "class"],
     p: [...(defaultSchema.attributes?.p || []), "className", "class"],
   },
 };
@@ -131,6 +132,20 @@ const alertTitleColors: Record<string, string> = {
   warning: "text-yellow-500",
   caution: "text-red-500",
 };
+
+/* רינדור תיבת התראה לפי סוג */
+function renderAlert(alertType: string, children: React.ReactNode, props: Record<string, unknown>) {
+  const Icon = alertIcons[alertType] || Info;
+  return (
+    <div className={`border-r-4 rounded-lg p-4 mb-4 ${alertColors[alertType]}`} {...props}>
+      <div className={`flex items-center gap-2 font-bold text-sm mb-2 ${alertTitleColors[alertType]}`}>
+        <Icon className="h-4 w-4" />
+        {alertLabels[alertType]}
+      </div>
+      <div className="text-sm [&>p]:mb-1 [&>p:last-child]:mb-0">{children}</div>
+    </div>
+  );
+}
 
 export default function MarkdownEditor({ value, onChange, height = "500px", editorViewRef, darkMode = false }: MarkdownEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null);
@@ -297,24 +312,9 @@ export default function MarkdownEditor({ value, onChange, height = "500px", edit
               ),
               /* ציטוטים משודרגים + תמיכה ב-GitHub Alerts */
               blockquote: ({ children, className, ...props }) => {
-                /* זיהוי GitHub Alerts לפי className שהפלאגין מוסיף */
-                const alertClass = className || "";
-                const alertType = alertClass.match(/markdown-alert-(\w+)/)?.[1];
+                const alertType = (className || "").match(/markdown-alert-(\w+)/)?.[1];
+                if (alertType && alertType in alertColors) return renderAlert(alertType, children, props);
 
-                if (alertType && alertType in alertColors) {
-                  const Icon = alertIcons[alertType] || Info;
-                  return (
-                    <div className={`border-r-4 rounded-lg p-4 mb-4 ${alertColors[alertType]}`} {...props}>
-                      <div className={`flex items-center gap-2 font-bold text-sm mb-2 ${alertTitleColors[alertType]}`}>
-                        <Icon className="h-4 w-4" />
-                        {alertLabels[alertType]}
-                      </div>
-                      <div className="text-sm [&>p]:mb-1 [&>p:last-child]:mb-0">{children}</div>
-                    </div>
-                  );
-                }
-
-                /* ציטוט רגיל - עיצוב משודרג */
                 return (
                   <blockquote className="border-r-4 border-primary/60 bg-muted/50 rounded-l-lg pr-4 pl-3 py-3 mb-4 text-muted-foreground italic [&>p]:mb-1 [&>p:last-child]:mb-0">
                     {children}
@@ -323,26 +323,9 @@ export default function MarkdownEditor({ value, onChange, height = "500px", edit
               },
               /* תמיכה ב-div של GitHub Alerts */
               div: ({ children, className, ...props }) => {
-                const alertClass = className || "";
-                const alertType = alertClass.match(/markdown-alert-(\w+)/)?.[1];
-
-                if (alertType && alertType in alertColors) {
-                  const Icon = alertIcons[alertType] || Info;
-                  return (
-                    <div className={`border-r-4 rounded-lg p-4 mb-4 ${alertColors[alertType]}`} {...props}>
-                      <div className={`flex items-center gap-2 font-bold text-sm mb-2 ${alertTitleColors[alertType]}`}>
-                        <Icon className="h-4 w-4" />
-                        {alertLabels[alertType]}
-                      </div>
-                      <div className="text-sm [&>p]:mb-1 [&>p:last-child]:mb-0">{children}</div>
-                    </div>
-                  );
-                }
-
-                if (className?.includes("mermaid")) {
-                  return <div className={className} {...props}>{children}</div>;
-                }
-
+                const alertType = (className || "").match(/markdown-alert-(\w+)/)?.[1];
+                if (alertType && alertType in alertColors) return renderAlert(alertType, children, props);
+                if (className?.includes("mermaid")) return <div className={className} {...props}>{children}</div>;
                 return <div {...props}>{children}</div>;
               },
               a: ({ children, href }) => (
