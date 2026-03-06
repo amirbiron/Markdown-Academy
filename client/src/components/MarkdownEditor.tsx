@@ -83,7 +83,7 @@ const darkTheme = EditorView.theme({
   ".cm-line": {
     padding: "0 16px",
   },
-});
+}, { dark: true });
 
 export default function MarkdownEditor({ value, onChange, height = "500px", editorViewRef, darkMode = false }: MarkdownEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null);
