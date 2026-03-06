@@ -330,7 +330,7 @@ export default function MarkdownEditor({ value, onChange, height = "500px", edit
                 const alertType = (className || "").match(/markdown-alert-(\w+)/)?.[1];
                 if (alertType && alertType in alertColors) return renderAlert(alertType, children, props);
                 if (className?.includes("mermaid")) return <div className={className} {...props}>{children}</div>;
-                return <div {...props}>{children}</div>;
+                return <div className={className} {...props}>{children}</div>;
               },
               a: ({ children, href }) => (
                 <a href={href} className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">
