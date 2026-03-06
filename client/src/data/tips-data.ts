@@ -127,7 +127,7 @@ export const tipsData: Tip[] = [
 `,
     injectSnippets: [
       { label: "KBD", snippet: "<kbd>Key</kbd>", cursorOffset: 5 },
-      { label: "Ctrl+", snippet: "<kbd>Ctrl</kbd> + <kbd>Key</kbd>", cursorOffset: 27 },
+      { label: "Ctrl+", snippet: "<kbd>Ctrl</kbd> + <kbd>Key</kbd>", cursorOffset: 23 },
     ],
   },
 
@@ -233,7 +233,7 @@ Markdown היא שפת סימון קלה שנוצרה על ידי John Gruber ב
       {
         label: "Details",
         snippet: "<details>\n<summary>כותרת</summary>\n\nתוכן כאן\n\n</details>",
-        cursorOffset: 20,
+        cursorOffset: 19,
       },
     ],
   },
