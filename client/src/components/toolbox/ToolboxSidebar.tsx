@@ -132,7 +132,7 @@ export default function ToolboxSidebar(props: ToolboxSidebarProps) {
   }
 
   return (
-    <aside className="w-72 shrink-0 border rounded-lg bg-card overflow-hidden h-[calc(100vh-140px)] sticky top-24">
+    <aside className="w-72 shrink-0 border rounded-lg bg-card text-card-foreground overflow-hidden h-[calc(100vh-140px)] sticky top-24">
       <SidebarContent {...props} />
     </aside>
   );
