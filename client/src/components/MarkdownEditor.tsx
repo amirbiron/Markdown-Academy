@@ -263,7 +263,11 @@ export default function MarkdownEditor({ value, onChange, height = "500px", edit
               h1: ({ children }) => <h1 className="text-3xl font-bold mb-4">{children}</h1>,
               h2: ({ children }) => <h2 className="text-2xl font-bold mb-3">{children}</h2>,
               h3: ({ children }) => <h3 className="text-xl font-bold mb-2">{children}</h3>,
-              p: ({ children }) => <p className="mb-4 leading-relaxed">{children}</p>,
+              p: ({ children, className }) => {
+                /* הסתרת כותרת ההתראה של הפלאגין - אנחנו מרנדרים כותרת משלנו */
+                if (className?.includes("markdown-alert-title")) return null;
+                return <p className="mb-4 leading-relaxed">{children}</p>;
+              },
               ul: ({ children }) => <ul className="list-disc list-inside mb-4 space-y-2">{children}</ul>,
               ol: ({ children }) => <ol className="list-decimal list-inside mb-4 space-y-2">{children}</ol>,
               li: ({ children }) => <li className="mr-4">{children}</li>,
