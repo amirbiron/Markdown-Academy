@@ -114,6 +114,33 @@
   --sidebar-ring: oklch(0.488 0.243 264.376);
 }
 
+/* Toolbox page — גיסט dark design system (scoped) */
+.toolbox-dark {
+  --background: oklch(0.13 0.01 270);       /* #0f0f23 */
+  --card: oklch(0.18 0.025 250);            /* #16213e */
+  --card-foreground: oklch(0.93 0.005 90);  /* #eee */
+  --foreground: oklch(0.93 0.005 90);
+  --border: oklch(0.40 0.04 230);           /* #3d5a80 */
+  --primary: oklch(0.58 0.15 230);          /* #0088cc */
+  --primary-foreground: oklch(0.95 0.005 90);
+  --secondary: oklch(0.24 0.015 250);
+  --secondary-foreground: oklch(0.93 0.005 90);
+  --muted: oklch(0.20 0.015 260);
+  --muted-foreground: oklch(0.70 0.01 250);
+  --accent: oklch(0.24 0.015 250);
+  --accent-foreground: oklch(0.93 0.005 90);
+  --ring: oklch(0.58 0.15 230);
+  --input: oklch(0.40 0.04 230 / 50%);
+}
+
+.toolbox-dark .toolbox-card {
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+}
+
+.toolbox-dark .toolbox-card:hover {
+  box-shadow: 0 8px 35px rgba(0, 136, 204, 0.2);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

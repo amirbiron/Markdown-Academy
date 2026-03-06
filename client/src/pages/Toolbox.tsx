@@ -39,9 +39,9 @@ export default function Toolbox() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-purple-50/30 to-blue-50/30">
+    <div className="dark toolbox-dark min-h-screen" style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #0f0f23 100%)' }}>
       {/* Header */}
-      <header className="container py-4 border-b bg-card/50 backdrop-blur sticky top-0 z-30">
+      <header className="container py-4 border-b bg-card/80 backdrop-blur sticky top-0 z-30">
         <nav className="flex items-center justify-between">
           <Link href="/">
             <div className="flex items-center gap-2 cursor-pointer">

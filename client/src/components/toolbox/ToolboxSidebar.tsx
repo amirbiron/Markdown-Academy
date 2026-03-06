@@ -118,7 +118,7 @@ export default function ToolboxSidebar(props: ToolboxSidebarProps) {
             <Menu className="h-4 w-4" />
           </Button>
         </SheetTrigger>
-        <SheetContent side="right" className="p-0 w-80">
+        <SheetContent side="right" className="dark toolbox-dark p-0 w-80">
           <SidebarContent
             {...props}
             onSelectTip={(tip) => {
