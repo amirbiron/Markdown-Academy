@@ -14,7 +14,7 @@ import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github.css";
 import mermaid from "mermaid";
-import { Info, Lightbulb, AlertTriangle, OctagonAlert, CircleAlert } from "lucide-react";
+import { Info, Lightbulb, AlertTriangle, OctagonAlert, CircleAlert, Copy, Check } from "lucide-react";
 
 interface MarkdownEditorProps {
   value: string;
@@ -151,6 +151,14 @@ export default function MarkdownEditor({ value, onChange, height = "500px", edit
   const editorRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<EditorView | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  function handleCopy() {
+    navigator.clipboard.writeText(value).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    });
+  }
 
   /* callback שמעדכן את הstate בכל שינוי בעורך */
   const onChangeRef = useRef(onChange);
@@ -236,8 +244,15 @@ export default function MarkdownEditor({ value, onChange, height = "500px", edit
     <div className="grid lg:grid-cols-2 gap-4" style={{ height }}>
       {/* פאנל העורך */}
       <div className="border rounded-lg overflow-hidden bg-card flex flex-col">
-        <div className="bg-muted px-4 py-2 text-sm font-medium border-b">
-          עורך Markdown
+        <div className="bg-muted px-4 py-2 text-sm font-medium border-b flex items-center justify-between">
+          <span>עורך Markdown</span>
+          <button
+            onClick={handleCopy}
+            className="p-1 rounded-md hover:bg-accent/50 transition-colors text-muted-foreground hover:text-foreground"
+            title="העתק הכל"
+          >
+            {copied ? <Check className="h-3.5 w-3.5 text-green-500" /> : <Copy className="h-3.5 w-3.5" />}
+          </button>
         </div>
         <div
           ref={editorRef}
@@ -320,7 +335,8 @@ export default function MarkdownEditor({ value, onChange, height = "500px", edit
                 if (alertType && alertType in alertColors) return renderAlert(alertType, children, props);
 
                 return (
-                  <blockquote className="border-r-4 border-primary/60 bg-muted/50 rounded-l-lg pr-4 pl-3 py-3 mb-4 text-muted-foreground italic [&>p]:mb-1 [&>p:last-child]:mb-0">
+                  <blockquote className="relative border-r-4 border-primary/60 bg-muted/40 rounded-lg pr-5 pl-4 py-4 mb-4 text-muted-foreground [&>p]:mb-1 [&>p:last-child]:mb-0">
+                    <span className="absolute top-2 right-1.5 text-primary/20 text-2xl font-serif leading-none select-none" aria-hidden>"</span>
                     {children}
                   </blockquote>
                 );
