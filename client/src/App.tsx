@@ -9,6 +9,7 @@ import Lessons from "./pages/Lessons";
 import LessonView from "./pages/LessonView";
 import Login from "./pages/Login";
 import Sandbox from "./pages/Sandbox";
+import Toolbox from "./pages/Toolbox";
 import Achievements from "./pages/Achievements";
 
 function Router() {
@@ -19,6 +20,7 @@ function Router() {
       <Route path={"/lessons"} component={Lessons} />
       <Route path={"/lesson/:id"} component={LessonView} />
       <Route path={"/sandbox"} component={Sandbox} />
+      <Route path={"/toolbox"} component={Toolbox} />
       <Route path={"/achievements"} component={Achievements} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />

@@ -17,6 +17,7 @@ interface MarkdownEditorProps {
   value: string;
   onChange: (value: string) => void;
   height?: string;
+  editorViewRef?: React.MutableRefObject<EditorView | null>;
 }
 
 /* ערכת נושא בהירה מותאמת ל-CodeMirror */
@@ -51,7 +52,7 @@ const lightTheme = EditorView.theme({
   },
 });
 
-export default function MarkdownEditor({ value, onChange, height = "500px" }: MarkdownEditorProps) {
+export default function MarkdownEditor({ value, onChange, height = "500px", editorViewRef }: MarkdownEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<EditorView | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -96,11 +97,13 @@ export default function MarkdownEditor({ value, onChange, height = "500px" }: Ma
     });
 
     viewRef.current = view;
+    if (editorViewRef) editorViewRef.current = view;
     setMounted(true);
 
     return () => {
       view.destroy();
       viewRef.current = null;
+      if (editorViewRef) editorViewRef.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

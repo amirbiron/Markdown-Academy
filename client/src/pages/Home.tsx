@@ -1,7 +1,7 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { BookOpen, Code2, Sparkles, Trophy, Zap } from "lucide-react";
+import { BookOpen, Code2, Sparkles, Trophy, Wrench, Zap } from "lucide-react";
 import { Link } from "wouter";
 
 export default function Home() {
@@ -24,6 +24,9 @@ export default function Home() {
                 </Link>
                 <Link href="/sandbox">
                   <Button variant="ghost">ארגז חול</Button>
+                </Link>
+                <Link href="/toolbox">
+                  <Button variant="ghost">ארגז כלים</Button>
                 </Link>
                 <Link href="/achievements">
                   <Button variant="ghost">
@@ -83,7 +86,7 @@ export default function Home() {
         </div>
 
         {/* Features Grid */}
-        <div className="grid md:grid-cols-3 gap-6 mt-20 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-20 max-w-6xl mx-auto">
           <Card className="p-6 space-y-4 hover:shadow-lg transition-shadow animate-scale-in glass">
             <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
               <BookOpen className="w-6 h-6 text-primary" />
@@ -105,6 +108,16 @@ export default function Home() {
           </Card>
 
           <Card className="p-6 space-y-4 hover:shadow-lg transition-shadow animate-scale-in glass" style={{ animationDelay: "0.2s" }}>
+            <div className="w-12 h-12 rounded-full bg-orange-500/10 flex items-center justify-center">
+              <Wrench className="w-6 h-6 text-orange-500" />
+            </div>
+            <h3 className="text-xl font-bold">ארגז כלים</h3>
+            <p className="text-muted-foreground">
+              גלו טריקים מתקדמים עם כרטיסיות טיפים, חיפוש מהיר ו-Playground אינטראקטיבי.
+            </p>
+          </Card>
+
+          <Card className="p-6 space-y-4 hover:shadow-lg transition-shadow animate-scale-in glass" style={{ animationDelay: "0.3s" }}>
             <div className="w-12 h-12 rounded-full bg-purple-500/10 flex items-center justify-center">
               <Trophy className="w-6 h-6 text-purple-500" />
             </div>
