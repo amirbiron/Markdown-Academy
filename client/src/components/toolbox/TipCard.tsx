@@ -6,6 +6,7 @@ import {
   FootprintsIcon, Quote, ChevronDown,
   CheckSquare, AlertTriangle, GitCompare,
   EyeOff, Space, Type, LayoutList, Github, Wand2,
+  SmilePlus, Link, Table, ImageIcon,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -15,6 +16,7 @@ const iconMap: Record<string, LucideIcon> = {
   FootprintsIcon, Quote, ChevronDown,
   CheckSquare, AlertTriangle, GitCompare,
   EyeOff, Space, Type, LayoutList, Github, Wand2,
+  SmilePlus, Link, Table, ImageIcon,
 };
 
 interface TipCardProps {

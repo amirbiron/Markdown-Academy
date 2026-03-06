@@ -410,4 +410,170 @@ Markdown "בולע" רווחים כפולים. הנה הפתרונות:
       { label: "&ensp;", snippet: "&ensp;" },
     ],
   },
+  {
+    id: "emoji-shortcodes",
+    title: "אימוג'י ב-Markdown",
+    category: "advanced",
+    icon: "SmilePlus",
+    description: "הוספת אימוג'י עם קודים קצרים או Unicode ישיר",
+    markdownExample: `# אימוג'י ב-Markdown
+
+## Unicode ישיר
+פשוט הדביקו אימוג'י ישירות: 🎉 🚀 ✅ ❌ 💡 ⚡ 🔥 📝
+
+## טבלת אימוג'י שימושיים
+
+| שימוש | אימוג'י | תיאור |
+|:------|:-------:|:------|
+| הצלחה | ✅ | אישור, בוצע |
+| שגיאה | ❌ | כישלון, לא |
+| אזהרה | ⚠️ | שימו לב |
+| רעיון | 💡 | טיפ, הארה |
+| ביצועים | ⚡ | מהירות |
+| חם | 🔥 | חשוב, trending |
+| כוכב | ⭐ | מועדף, דירוג |
+| עבודה | 🔧 | תיקון, כלים |
+
+## שימוש ב-commit messages
+
+\`\`\`
+✨ feat: תכונה חדשה
+🐛 fix: תיקון באג
+📝 docs: עדכון תיעוד
+🎨 style: שיפור עיצוב
+♻️ refactor: שכתוב קוד
+🧪 test: הוספת בדיקות
+\`\`\`
+
+> **טיפ:** ב-GitHub, אפשר גם \`:emoji_name:\` כמו \`:rocket:\` → 🚀
+`,
+    injectSnippets: [
+      { label: "✅", snippet: "✅ " },
+      { label: "❌", snippet: "❌ " },
+      { label: "⚠️", snippet: "⚠️ " },
+      { label: "💡", snippet: "💡 " },
+      { label: "🚀", snippet: "🚀 " },
+      { label: "🔥", snippet: "🔥 " },
+    ],
+  },
+  {
+    id: "link-tricks",
+    title: "טריקי קישורים",
+    category: "structure",
+    icon: "Link",
+    description: "קישורים מתקדמים: עוגנים, הפניות, וקישורים אוטומטיים",
+    markdownExample: `# טריקי קישורים ב-Markdown
+
+## קישור רגיל
+[טקסט הקישור](https://example.com)
+
+## קישור עם כותרת (tooltip)
+[רחפו עליי](https://example.com "זו כותרת הקישור!")
+
+## קישורי הפניה (Reference Links)
+שימושי כשיש הרבה קישורים במסמך:
+
+[Markdown Guide][1] הוא משאב מעולה.
+גם [GitHub Docs][gh] שווה ביקור.
+
+[1]: https://www.markdownguide.org
+[gh]: https://docs.github.com
+
+## קישורים אוטומטיים
+כתובות URL מזוהות אוטומטית:
+https://github.com
+
+## קישור לאימייל
+<mailto:example@email.com>
+
+## תמונה כקישור
+[![Alt text](https://via.placeholder.com/100x30)](https://example.com)
+
+> **טיפ:** קישורי הפניה שומרים על המסמך נקי כשיש הרבה URLs.
+`,
+    injectSnippets: [
+      { label: "קישור", snippet: "[טקסט](url)", cursorOffset: 1 },
+      { label: "קישור + tooltip", snippet: '[טקסט](url "כותרת")', cursorOffset: 1 },
+      { label: "קישור הפניה", snippet: "[טקסט][ref]\n\n[ref]: url", cursorOffset: 1 },
+    ],
+  },
+  {
+    id: "tables-advanced",
+    title: "טבלאות מתקדמות",
+    category: "structure",
+    icon: "Table",
+    description: "טבלאות עם יישור, עיצוב פנימי ותבניות מוכנות",
+    markdownExample: `# טבלאות מתקדמות
+
+## יישור עמודות
+
+| שמאל | מרכז | ימין |
+|:-----|:-----:|-----:|
+| טקסט | טקסט | טקסט |
+| ארוך יותר | קצר | 123 |
+
+## טבלה עם עיצוב פנימי
+
+| תכונה | תיאור | סטטוס |
+|:-------|:-------|:------:|
+| **Bold** בתוך תא | תיאור עם \`קוד\` | ✅ |
+| ~~מבוטל~~ | קישור [כאן](https://example.com) | ❌ |
+| *נטוי* | טקסט רגיל | ⏳ |
+
+## תבנית השוואה
+
+| | חינמי | פרו | אנטרפרייז |
+|:--|:-----:|:---:|:---------:|
+| משתמשים | 1 | 10 | ∞ |
+| אחסון | 1GB | 50GB | ∞ |
+| תמיכה | ❌ | ✅ | ✅ |
+| API | ❌ | ✅ | ✅ |
+
+> **טיפ:** \`:\` קובע את היישור — \`:---\` שמאל, \`:---:\` מרכז, \`---:\` ימין.
+`,
+    injectSnippets: [
+      { label: "טבלה בסיסית", snippet: "\n| כותרת | כותרת |\n|:------|:------|\n| תא | תא |\n" },
+      { label: "טבלה 3 עמודות", snippet: "\n| שמאל | מרכז | ימין |\n|:-----|:-----:|-----:|\n| | | |\n" },
+    ],
+  },
+  {
+    id: "images-advanced",
+    title: "תמונות וגרפיקה",
+    category: "structure",
+    icon: "ImageIcon",
+    description: "תמונות, badges, גודל מותאם ותמונות מרובות",
+    markdownExample: `# תמונות וגרפיקה ב-Markdown
+
+## תמונה בסיסית
+![תיאור התמונה](https://via.placeholder.com/400x200)
+
+## תמונה עם כותרת
+![לוגו](https://via.placeholder.com/200x80 "כותרת בריחוף")
+
+## שליטה בגודל עם HTML
+<img src="https://via.placeholder.com/150x150" width="100" alt="תמונה קטנה">
+
+## Badges (תגיות סטטוס)
+Badges נפוצים ב-README של GitHub:
+
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Build](https://img.shields.io/badge/build-passing-brightgreen)
+![Status](https://img.shields.io/badge/status-beta-orange)
+
+## תמונות זו-לצד-זו (HTML)
+<p>
+<img src="https://via.placeholder.com/120x120" width="100">
+<img src="https://via.placeholder.com/120x120" width="100">
+<img src="https://via.placeholder.com/120x120" width="100">
+</p>
+
+> **טיפ:** לשליטה מדויקת בגודל, השתמשו בתגית \`<img>\` עם \`width\`.
+`,
+    injectSnippets: [
+      { label: "תמונה", snippet: "![alt](url)", cursorOffset: 2 },
+      { label: "Badge", snippet: "![label](https://img.shields.io/badge/label-value-color)", cursorOffset: 2 },
+      { label: "תמונה + גודל", snippet: '<img src="url" width="300" alt="">', cursorOffset: 10 },
+    ],
+  },
 ];
