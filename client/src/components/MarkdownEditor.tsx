@@ -235,7 +235,7 @@ export default function MarkdownEditor({ value, onChange, height = "500px", edit
   useEffect(() => {
     if (mounted && value.includes("```mermaid")) {
       /* איפוס ורינדור מחדש של תרשימי Mermaid */
-      setTimeout(async () => {
+      const id = setTimeout(async () => {
         const elements = document.querySelectorAll<HTMLElement>(".mermaid");
         elements.forEach((el) => {
           el.removeAttribute("data-processed");
@@ -247,6 +247,7 @@ export default function MarkdownEditor({ value, onChange, height = "500px", edit
           /* שגיאות תחביר של המשתמש – מתעלמים */
         }
       }, 150);
+      return () => clearTimeout(id);
     }
   }, [value, mounted]);
 
@@ -337,7 +338,7 @@ export default function MarkdownEditor({ value, onChange, height = "500px", edit
                   child &&
                   typeof child === "object" &&
                   "props" in child &&
-                  child.props?.className === "mermaid my-4"
+                  child.props?.className?.includes("mermaid")
                 ) {
                   return <>{children}</>;
                 }
