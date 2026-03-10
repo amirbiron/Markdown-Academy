@@ -690,4 +690,246 @@ x<sup>2</sup> + y<sup>2</sup> = z<sup>2</sup>
       { label: "Subscript", snippet: "<sub>2</sub>", cursorOffset: 5 },
     ],
   },
+  {
+    id: "mermaid-diagrams",
+    title: "דיאגרמות Mermaid",
+    category: "advanced",
+    icon: "GitBranch",
+    description: "יצירת תרשימי זרימה, תרשימי רצף ועוד עם Mermaid",
+    markdownExample: `# דיאגרמות Mermaid
+
+Mermaid מאפשר ליצור דיאגרמות ישירות מ-Markdown!
+
+## תרשים זרימה (Flowchart)
+
+\`\`\`mermaid
+flowchart TD
+    A[התחלה] --> B{שאלה?}
+    B -- כן --> C[פעולה 1]
+    B -- לא --> D[פעולה 2]
+    C --> E[סיום]
+    D --> E
+\`\`\`
+
+## תרשים רצף (Sequence)
+
+\`\`\`mermaid
+sequenceDiagram
+    participant U as משתמש
+    participant S as שרת
+    U->>S: בקשת התחברות
+    S-->>U: טוקן JWT
+    U->>S: בקשת נתונים + טוקן
+    S-->>U: תשובה עם נתונים
+\`\`\`
+
+## תרשים עוגה (Pie)
+
+\`\`\`mermaid
+pie title שפות תכנות פופולריות
+    "JavaScript" : 30
+    "Python" : 25
+    "TypeScript" : 20
+    "Java" : 15
+    "אחרות" : 10
+\`\`\`
+
+> **טיפ:** GitHub, GitLab ואתרים רבים תומכים ב-Mermaid ישירות בתוך בלוקי קוד.
+`,
+    injectSnippets: [
+      { label: "תרשים זרימה", snippet: "\n```mermaid\nflowchart TD\n    A[התחלה] --> B[סיום]\n```\n" },
+      { label: "תרשים רצף", snippet: "\n```mermaid\nsequenceDiagram\n    A->>B: הודעה\n    B-->>A: תשובה\n```\n" },
+      { label: "תרשים עוגה", snippet: "\n```mermaid\npie title כותרת\n    \"חלק א\" : 60\n    \"חלק ב\" : 40\n```\n" },
+    ],
+  },
+  {
+    id: "math-latex",
+    title: "נוסחאות מתמטיות (LaTeX)",
+    category: "advanced",
+    icon: "Calculator",
+    description: "כתיבת נוסחאות מתמטיות עם תחביר LaTeX בתוך Markdown",
+    markdownExample: `# נוסחאות מתמטיות
+
+## נוסחה בתוך שורה (Inline)
+הנוסחה $E = mc^2$ היא המפורסמת ביותר בפיזיקה.
+
+משפט פיתגורס: $a^2 + b^2 = c^2$
+
+## נוסחה בבלוק (Block)
+
+$$
+\\sum_{i=1}^{n} i = \\frac{n(n+1)}{2}
+$$
+
+$$
+f(x) = \\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}
+$$
+
+## דוגמאות נפוצות
+
+| נוסחה | קוד |
+|:------|:----|
+| $x^2$ | \`$x^2$\` |
+| $\\sqrt{x}$ | \`$\\sqrt{x}$\` |
+| $\\frac{a}{b}$ | \`$\\frac{a}{b}$\` |
+| $\\alpha, \\beta, \\gamma$ | \`$\\alpha, \\beta, \\gamma$\` |
+
+> **טיפ:** GitHub תומך ב-LaTeX עם \`$\` לנוסחה בשורה ו-\`$$\` לבלוק. נתמך גם ב-Jupyter ו-Obsidian.
+`,
+    injectSnippets: [
+      { label: "נוסחה בשורה", snippet: "$x^2$", cursorOffset: 1 },
+      { label: "בלוק נוסחה", snippet: "\n$$\n\\frac{a}{b}\n$$\n", cursorOffset: 4 },
+      { label: "שורש", snippet: "$\\sqrt{x}$", cursorOffset: 7 },
+      { label: "סכום", snippet: "$\\sum_{i=1}^{n} i$", cursorOffset: 1 },
+    ],
+  },
+  {
+    id: "anchor-links",
+    title: "קישורי עוגן (Anchor Links)",
+    category: "structure",
+    icon: "Anchor",
+    description: "יצירת תוכן עניינים וקישורים לכותרות בתוך המסמך",
+    markdownExample: `# קישורי עוגן ותוכן עניינים
+
+## תוכן עניינים
+
+- [מבוא](#מבוא)
+- [התקנה](#התקנה)
+- [שימוש בסיסי](#שימוש-בסיסי)
+- [שאלות נפוצות](#שאלות-נפוצות)
+
+---
+
+## מבוא
+כל כותרת ב-Markdown מקבלת אוטומטית עוגן (anchor) שאפשר לקשר אליו.
+
+## התקנה
+\`\`\`bash
+npm install my-package
+\`\`\`
+
+## שימוש בסיסי
+פשוט ייבאו את החבילה והשתמשו בה.
+
+## שאלות נפוצות
+
+**איך יוצרים את ה-anchor?**
+הכותרת הופכת ל-anchor: אותיות קטנות, רווחים → מקפים.
+
+| כותרת | anchor |
+|:------|:-------|
+| \`## Hello World\` | \`#hello-world\` |
+| \`## שימוש בסיסי\` | \`#שימוש-בסיסי\` |
+| \`## Step 1: Install\` | \`#step-1-install\` |
+
+> **טיפ:** ב-GitHub, אפשר לראות את ה-anchor על ידי ריחוף מעל כותרת ולחיצה על אייקון השרשרת.
+`,
+    injectSnippets: [
+      { label: "קישור לכותרת", snippet: "[טקסט](#כותרת)", cursorOffset: 1 },
+      { label: "תוכן עניינים", snippet: "## תוכן עניינים\n\n- [כותרת 1](#כותרת-1)\n- [כותרת 2](#כותרת-2)\n- [כותרת 3](#כותרת-3)\n" },
+    ],
+  },
+  {
+    id: "escape-characters",
+    title: "תווי בריחה (Escape)",
+    category: "formatting",
+    icon: "ShieldAlert",
+    description: "איך להציג תווים מיוחדים של Markdown כטקסט רגיל",
+    markdownExample: `# תווי בריחה ב-Markdown
+
+לפעמים רוצים להציג תווים מיוחדים **כטקסט רגיל** בלי שה-Markdown יפרש אותם.
+
+## הפתרון: Backslash (\\)
+
+| רוצים להציג | כותבים | התוצאה |
+|:------------|:-------|:-------|
+| \\*כוכביות\\* | \`\\*כוכביות\\*\` | לא מודגש |
+| \\#כותרת | \`\\#כותרת\` | לא כותרת |
+| \\[קישור\\] | \`\\[קישור\\]\` | לא קישור |
+| \\- רשימה | \`\\- רשימה\` | לא רשימה |
+
+## תווים שצריך לברוח מהם
+
+\\\\ \\\` \\* \\_ \\{ \\} \\[ \\] \\( \\) \\# \\+ \\- \\. \\! \\|
+
+## דוגמה מעשית
+
+רוצים לכתוב: \\*\\*זה לא מודגש\\*\\*
+
+בלי בריחה: **זה מודגש**
+עם בריחה: \\*\\*זה לא מודגש\\*\\*
+
+## שימוש ב-backtick כחלופה
+אפשר גם לעטוף בבאקטיק: \`**לא מודגש**\`, \`# לא כותרת\`
+
+> **טיפ:** Backslash עובד רק לפני תווים מיוחדים של Markdown. לפני אותיות רגילות הוא פשוט מוצג.
+`,
+    injectSnippets: [
+      { label: "בריחה מ-*", snippet: "\\*טקסט\\*" },
+      { label: "בריחה מ-#", snippet: "\\# לא כותרת" },
+      { label: "בריחה מ-[]", snippet: "\\[לא קישור\\]" },
+    ],
+  },
+  {
+    id: "code-block-tricks",
+    title: "טריקי בלוקי קוד",
+    category: "github",
+    icon: "FileCode",
+    description: "טריקים מתקדמים לבלוקי קוד: הדגשת שורות, שמות קבצים, ועוד",
+    markdownExample: `# טריקי בלוקי קוד
+
+## שפות נתמכות
+ציינו את שם השפה אחרי הבאקטיקים לקבל Syntax Highlighting:
+
+\`\`\`javascript
+const greeting = "שלום!";
+console.log(greeting);
+\`\`\`
+
+\`\`\`python
+def greet(name):
+    return f"שלום {name}!"
+\`\`\`
+
+\`\`\`css
+.container {
+  direction: rtl;
+  text-align: right;
+}
+\`\`\`
+
+## קוד בתוך שורה
+השתמשו בבאקטיק בודד: \`console.log("hello")\`
+
+## באקטיקים בתוך קוד
+כדי להציג באקטיקים בתוך קוד, השתמשו בבאקטיקים כפולים:
+\`\` const x = \`template literal\` \`\`
+
+## בלוק קוד ללא שפה
+\`\`\`
+זה בלוק קוד רגיל
+בלי syntax highlighting
+\`\`\`
+
+## JSON עם הדגשה
+\`\`\`json
+{
+  "name": "Markdown Academy",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build"
+  }
+}
+\`\`\`
+
+> **טיפ:** GitHub תומך ביותר מ-200 שפות! כולל \`bash\`, \`sql\`, \`yaml\`, \`markdown\` ועוד.
+`,
+    injectSnippets: [
+      { label: "JavaScript", snippet: "\n```javascript\nconst x = 1;\n```\n" },
+      { label: "Python", snippet: "\n```python\ndef func():\n    pass\n```\n" },
+      { label: "JSON", snippet: "\n```json\n{\n  \"key\": \"value\"\n}\n```\n" },
+      { label: "Bash", snippet: "\n```bash\nnpm install\n```\n" },
+    ],
+  },
 ];
