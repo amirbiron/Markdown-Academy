@@ -27,7 +27,7 @@ interface MarkdownEditorProps {
 /* סכמת sanitize מורחבת - מתירה mark, kbd, ו-classes של GitHub Alerts */
 const customSanitizeSchema = {
   ...defaultSchema,
-  tagNames: [...(defaultSchema.tagNames || []), "mark", "dl", "dt", "dd"],
+  tagNames: [...(defaultSchema.tagNames || []), "mark", "dl", "dt", "dd", "sup", "sub"],
   attributes: {
     ...defaultSchema.attributes,
     div: [...(defaultSchema.attributes?.div || []), "className", "class", "dataType"],
