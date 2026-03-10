@@ -166,6 +166,7 @@ export default function MarkdownEditor({ value, onChange, height = "500px", edit
 
   /* דגל שמונע קריאה חוזרת ל-onChange כשהעדכון מגיע מבחוץ (לא מהמשתמש) */
   const isExternalUpdate = useRef(false);
+  const previewRef = useRef<HTMLDivElement>(null);
 
   /* extension שמאזין לשינויים ומעדכן את ה-state */
   const handleChange = EditorView.updateListener.of((update) => {
@@ -236,10 +237,11 @@ export default function MarkdownEditor({ value, onChange, height = "500px", edit
     if (mounted && value.includes("```mermaid")) {
       /* איפוס ורינדור מחדש של תרשימי Mermaid */
       const id = setTimeout(async () => {
-        const elements = document.querySelectorAll<HTMLElement>(".mermaid");
+        const container = previewRef.current;
+        if (!container) return;
+        const elements = container.querySelectorAll<HTMLElement>(".mermaid");
         elements.forEach((el) => {
           el.removeAttribute("data-processed");
-          el.setAttribute("data-mermaid-id", "");
         });
         try {
           await mermaid.run({ nodes: elements });
@@ -279,12 +281,13 @@ export default function MarkdownEditor({ value, onChange, height = "500px", edit
           תצוגה מקדימה
         </div>
         <div
+          ref={previewRef}
           className="p-6 overflow-auto prose prose-sm max-w-none text-foreground"
           style={{ height: `calc(${height} - 40px)` }}
         >
           <ReactMarkdown
             remarkPlugins={[remarkGfm, remarkMark, remarkAlert]}
-            rehypePlugins={[rehypeRaw, [rehypeSanitize, customSanitizeSchema], rehypeHighlight]}
+            rehypePlugins={[rehypeRaw, [rehypeSanitize, customSanitizeSchema], [rehypeHighlight, { plainText: ["mermaid"] }]]}
             components={{
               h1: ({ children }) => <h1 className="text-3xl font-bold mb-4">{children}</h1>,
               h2: ({ children }) => <h2 className="text-2xl font-bold mb-3">{children}</h2>,
