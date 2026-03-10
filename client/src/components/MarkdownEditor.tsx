@@ -234,9 +234,20 @@ export default function MarkdownEditor({ value, onChange, height = "500px", edit
 
   useEffect(() => {
     if (mounted && value.includes("```mermaid")) {
-      setTimeout(() => {
-        mermaid.contentLoaded();
-      }, 100);
+      /* איפוס ורינדור מחדש של תרשימי Mermaid */
+      const id = setTimeout(async () => {
+        const elements = document.querySelectorAll<HTMLElement>(".mermaid");
+        elements.forEach((el) => {
+          el.removeAttribute("data-processed");
+          el.setAttribute("data-mermaid-id", "");
+        });
+        try {
+          await mermaid.run({ nodes: elements });
+        } catch {
+          /* שגיאות תחביר של המשתמש – מתעלמים */
+        }
+      }, 150);
+      return () => clearTimeout(id);
     }
   }, [value, mounted]);
 
@@ -320,15 +331,27 @@ export default function MarkdownEditor({ value, onChange, height = "500px", edit
                   </code>
                 );
               },
-              pre: ({ children }) => (
-                <pre
-                  className="mb-4 bg-muted p-4 rounded-lg overflow-x-auto border-0"
-                  dir="ltr"
-                  style={{ whiteSpace: "pre", tabSize: 4 }}
-                >
-                  {children}
-                </pre>
-              ),
+              pre: ({ children }) => {
+                /* אם הילד הוא תרשים Mermaid – לא עוטפים ב-pre כדי לא לשבור את הרינדור */
+                const child = Array.isArray(children) ? children[0] : children;
+                if (
+                  child &&
+                  typeof child === "object" &&
+                  "props" in child &&
+                  child.props?.className?.includes("mermaid")
+                ) {
+                  return <>{children}</>;
+                }
+                return (
+                  <pre
+                    className="mb-4 bg-muted p-4 rounded-lg overflow-x-auto border-0"
+                    dir="ltr"
+                    style={{ whiteSpace: "pre", tabSize: 4 }}
+                  >
+                    {children}
+                  </pre>
+                );
+              },
               /* ציטוטים משודרגים + תמיכה ב-GitHub Alerts */
               blockquote: ({ children, className, ...props }) => {
                 const alertType = (className || "").match(/markdown-alert-(\w+)/)?.[1];
