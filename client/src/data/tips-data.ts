@@ -651,7 +651,7 @@ ___
 > **טיפ:** \`<dl>\`, \`<dt>\`, \`<dd>\` — שימושיים למילונים, FAQ, ותיעוד API.
 `,
     injectSnippets: [
-      { label: "רשימת הגדרה", snippet: "<dl>\n<dt><strong>מונח</strong></dt>\n<dd>הגדרה</dd>\n</dl>", cursorOffset: 15 },
+      { label: "רשימת הגדרה", snippet: "<dl>\n<dt><strong>מונח</strong></dt>\n<dd>הגדרה</dd>\n</dl>", cursorOffset: 17 },
     ],
   },
   {
