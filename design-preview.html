@@ -3,48 +3,56 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SyncFlow — Design System Preview (מהאיפיון)</title>
+<title>SyncFlow — Design System Preview v2</title>
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   /* ===================================================
-     SyncFlow Design Tokens — חולצו מהמסכים (16 מסכים)
+     SyncFlow Design Tokens v2 — מעודכן לפי 19 מסכים
      =================================================== */
   :root {
-    /* --- רקעים --- */
-    --sf-bg-deep:        #0d0f1a;   /* רקע ראשי — הכי כהה */
-    --sf-bg-card:        #161a2e;   /* רקע כרטיסים */
-    --sf-bg-card-raised: #1a1f38;   /* כרטיס מורם (onboarding) */
-    --sf-bg-input:       #1e2340;   /* רקע שדות קלט / search */
-    --sf-bg-table-header:#1c2038;   /* header של טבלה */
-    --sf-bg-muted:       #232845;   /* רקע muted (filter tabs לא פעילים) */
+    /* --- רקעים (מעודכן — בהירים יותר מ-v1) --- */
+    --sf-bg-deep:        #111428;   /* רקע ראשי */
+    --sf-bg-card:        #1a1e38;   /* רקע כרטיסים */
+    --sf-bg-card-raised: #1e2240;   /* כרטיס מורם (onboarding, form) */
+    --sf-bg-input:       #161a30;   /* רקע שדות קלט (כהה יותר מהכרטיס) */
+    --sf-bg-table-header:#1c2040;   /* header של טבלה */
+    --sf-bg-muted:       #252a4a;   /* רקע muted (filter tabs לא פעילים) */
+    --sf-bg-hover:       #2a2f50;   /* hover state */
 
     /* --- טקסט --- */
     --sf-text-primary:   #e8eaf0;   /* טקסט ראשי — לבן-אפרפר */
-    --sf-text-secondary: #8b90a8;   /* טקסט משני — אפור */
-    --sf-text-muted:     #5c6180;   /* טקסט muted — placeholder */
+    --sf-text-secondary: #8b90a8;   /* טקסט משני — labels, descriptions */
+    --sf-text-muted:     #5c6180;   /* placeholder / disabled */
     --sf-text-white:     #ffffff;   /* לבן מלא — על כפתורים */
 
     /* --- Primary — סגול --- */
     --sf-primary:        #7c5bf5;   /* סגול CTA ראשי */
     --sf-primary-hover:  #6b4ae0;   /* hover */
-    --sf-primary-light:  #9b7ffc;   /* סגול בהיר — subtitle "ניהול ומעקב" */
-    --sf-primary-bg:     rgba(124, 91, 245, 0.15); /* רקע אייקון סגול */
+    --sf-primary-light:  #9b7ffc;   /* סגול בהיר — subtitle */
+    --sf-primary-bg:     rgba(124, 91, 245, 0.18); /* רקע אייקון סגול */
 
-    /* --- Accent Colors — אייקוני סטטיסטיקה --- */
-    --sf-teal:           #2dd4a8;   /* ירוק-טורקיז — FAB, הושלמו */
-    --sf-teal-bg:        rgba(45, 212, 168, 0.15);
-    --sf-green:          #34d399;   /* ירוק — צ'קמרק */
-    --sf-green-bg:       rgba(52, 211, 153, 0.15);
+    /* --- Accent Colors --- */
+    --sf-teal:           #2dd4bf;   /* טורקיז-ציאן — FAB, קשרים, נתונים */
+    --sf-teal-bg:        rgba(45, 212, 191, 0.18);
+    --sf-green:          #34d399;   /* ירוק — צ'קמרק, הושלמו */
+    --sf-green-bg:       rgba(52, 211, 153, 0.18);
     --sf-red:            #f43f5e;   /* אדום-ורוד — פתוחות */
-    --sf-red-bg:         rgba(244, 63, 94, 0.15);
-    --sf-amber:          #f59e0b;   /* צהוב-כתום — XP */
-    --sf-amber-bg:       rgba(245, 158, 11, 0.15);
+    --sf-red-bg:         rgba(244, 63, 94, 0.18);
+    --sf-amber:          #d4a020;   /* זהב-כתום — XP, הישגים, עומסים */
+    --sf-amber-bg:       rgba(212, 160, 32, 0.18);
     --sf-blue:           #3b82f6;   /* כחול — ישיבות */
-    --sf-blue-bg:        rgba(59, 130, 246, 0.15);
+    --sf-blue-bg:        rgba(59, 130, 246, 0.18);
+    --sf-orange:         #f59e0b;   /* כתום — ציון */
+    --sf-orange-bg:      rgba(245, 158, 11, 0.18);
+    --sf-pink:           #e879a8;   /* ורוד — החלטות, מוח */
+    --sf-pink-bg:        rgba(232, 121, 168, 0.18);
+    --sf-gray:           #8890a5;   /* אפור — ארכיון */
+    --sf-gray-bg:        rgba(136, 144, 165, 0.18);
 
     /* --- Borders --- */
-    --sf-border:         rgba(255, 255, 255, 0.08); /* border כללי */
-    --sf-border-light:   rgba(255, 255, 255, 0.12); /* border מודגש */
+    --sf-border:         rgba(255, 255, 255, 0.10); /* border כללי */
+    --sf-border-light:   rgba(255, 255, 255, 0.15); /* border מודגש */
+    --sf-border-active:  rgba(45, 212, 191, 0.5);   /* border פעיל — ציאן */
 
     /* --- Radius --- */
     --sf-radius-sm:      8px;
@@ -54,13 +62,15 @@
     --sf-radius-full:    9999px;
 
     /* --- Shadows --- */
-    --sf-shadow-card:    0 4px 16px rgba(0, 0, 0, 0.3);
-    --sf-shadow-fab:     0 4px 16px rgba(45, 212, 168, 0.3);
+    --sf-shadow-card:    0 4px 20px rgba(0, 0, 0, 0.25);
+    --sf-shadow-fab:     0 4px 16px rgba(45, 212, 191, 0.3);
 
-    /* --- Gradient — FAB button --- */
-    --sf-gradient-fab:   linear-gradient(135deg, #2dd4a8, #7c5bf5);
+    /* --- Gradients --- */
+    --sf-gradient-fab:   linear-gradient(135deg, #2dd4bf, #7c5bf5);
+    --sf-gradient-header:linear-gradient(135deg, #6c4ee0, #8b6cf5);
+    --sf-gradient-step:  linear-gradient(90deg, #34d399, #3b82f6, #7c5bf5, #e879a8);
 
-    /* --- Progress bar --- */
+    /* --- Progress --- */
     --sf-progress-bg:    #2a2f4a;
     --sf-progress-fill:  #7c5bf5;
   }
@@ -84,7 +94,7 @@
 
   /* === Section Headers === */
   .section-title {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 700;
     margin: 2.5rem 0 0.5rem;
     padding-bottom: 0.5rem;
@@ -105,7 +115,7 @@
   /* === Color Swatches === */
   .swatch-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
     gap: 0.75rem;
   }
   .swatch {
@@ -114,26 +124,26 @@
     border: 1px solid var(--sf-border-light);
   }
   .swatch-color {
-    height: 70px;
+    height: 65px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: 500;
   }
   .swatch-label {
-    padding: 0.5rem 0.65rem;
+    padding: 0.45rem 0.65rem;
     background: var(--sf-bg-card);
     font-size: 0.78rem;
   }
   .swatch-label code {
     display: block;
-    font-size: 0.68rem;
+    font-size: 0.65rem;
     color: var(--sf-text-muted);
     margin-top: 2px;
     direction: ltr;
     text-align: left;
-    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
   }
 
   /* === Preview Row === */
@@ -162,10 +172,7 @@
   }
   .btn:active { transform: scale(0.97); }
 
-  .btn-primary {
-    background: var(--sf-primary);
-    color: var(--sf-text-white);
-  }
+  .btn-primary { background: var(--sf-primary); color: var(--sf-text-white); }
   .btn-primary:hover { background: var(--sf-primary-hover); }
 
   .btn-ghost {
@@ -173,12 +180,9 @@
     color: var(--sf-text-primary);
     border: 1px solid var(--sf-border-light);
   }
-  .btn-ghost:hover { background: var(--sf-bg-muted); }
+  .btn-ghost:hover { background: var(--sf-bg-hover); }
 
-  .btn-destructive {
-    background: var(--sf-red);
-    color: var(--sf-text-white);
-  }
+  .btn-destructive { background: var(--sf-red); color: var(--sf-text-white); }
 
   .btn-fab {
     width: 52px;
@@ -210,18 +214,36 @@
   .input-field {
     width: 100%;
     max-width: 360px;
-    padding: 0.6rem 1rem;
+    padding: 0.65rem 1rem;
     border-radius: var(--sf-radius-md);
-    border: 1px solid var(--sf-border);
+    border: 1px solid var(--sf-border-light);
     background: var(--sf-bg-input);
     color: var(--sf-text-primary);
     font-family: inherit;
     font-size: 0.875rem;
     outline: none;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s;
   }
   .input-field:focus { border-color: var(--sf-primary); box-shadow: 0 0 0 2px rgba(124, 91, 245, 0.2); }
   .input-field::placeholder { color: var(--sf-text-muted); }
+
+  .textarea {
+    width: 100%;
+    max-width: 500px;
+    min-height: 80px;
+    padding: 0.65rem 1rem;
+    border-radius: var(--sf-radius-md);
+    border: 1px solid var(--sf-border-light);
+    background: var(--sf-bg-input);
+    color: var(--sf-text-primary);
+    font-family: inherit;
+    font-size: 0.875rem;
+    outline: none;
+    resize: vertical;
+    transition: border-color 0.2s;
+  }
+  .textarea:focus { border-color: var(--sf-primary); }
+  .textarea::placeholder { color: var(--sf-text-muted); }
 
   /* === Card === */
   .card {
@@ -231,7 +253,7 @@
     padding: 1.25rem;
     box-shadow: var(--sf-shadow-card);
   }
-  .card-title { font-size: 1rem; font-weight: 600; margin-bottom: 0.35rem; }
+  .card-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.3rem; }
   .card-desc { font-size: 0.8rem; color: var(--sf-text-secondary); }
 
   /* === Stat Card === */
@@ -245,17 +267,48 @@
     box-shadow: var(--sf-shadow-card);
   }
   .stat-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: var(--sf-radius-full);
+    width: 44px;
+    height: 44px;
+    border-radius: var(--sf-radius-md);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 0.5rem;
-    font-size: 1.1rem;
+    font-size: 1.15rem;
   }
   .stat-number { font-size: 1.75rem; font-weight: 700; }
   .stat-label { font-size: 0.78rem; color: var(--sf-text-secondary); margin-top: 0.25rem; }
+
+  /* === Feature Card — מסך "עוד" === */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    max-width: 500px;
+  }
+  .feature-card {
+    background: var(--sf-bg-card);
+    border: 1px solid var(--sf-border);
+    border-radius: var(--sf-radius-lg);
+    padding: 1.25rem 0.75rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .feature-card:hover { border-color: var(--sf-border-light); }
+  .feature-card.active { border-color: var(--sf-border-active); box-shadow: 0 0 12px rgba(45, 212, 191, 0.15); }
+  .feature-card .feat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--sf-radius-md);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+  }
+  .feature-card .feat-title { font-size: 0.85rem; font-weight: 600; }
+  .feature-card .feat-desc { font-size: 0.72rem; color: var(--sf-text-secondary); margin-top: 0.15rem; }
 
   /* === Filter Tabs === */
   .filter-tabs { display: flex; gap: 0.5rem; }
@@ -274,6 +327,33 @@
     background: var(--sf-primary);
     color: var(--sf-text-white);
     border-color: var(--sf-primary);
+  }
+
+  /* === Toggle Tabs (ישיבה מובנית / פתוחה) === */
+  .toggle-tabs {
+    display: flex;
+    gap: 0;
+    border-radius: var(--sf-radius-full);
+    overflow: hidden;
+    border: 1px solid var(--sf-border);
+    max-width: 360px;
+  }
+  .toggle-tab {
+    flex: 1;
+    padding: 0.55rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-align: center;
+    cursor: pointer;
+    font-family: inherit;
+    border: none;
+    background: transparent;
+    color: var(--sf-text-secondary);
+    transition: all 0.2s;
+  }
+  .toggle-tab.active {
+    background: var(--sf-gradient-header);
+    color: var(--sf-text-white);
   }
 
   /* === Table === */
@@ -327,38 +407,47 @@
     align-items: center;
     justify-content: center;
   }
-  .onboarding-header {
-    text-align: center;
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-  }
-  .onboarding-sub {
-    text-align: center;
-    font-size: 0.8rem;
-    color: var(--sf-text-secondary);
-    margin-bottom: 1rem;
-  }
+  .onboarding-header { text-align: center; font-size: 1.1rem; font-weight: 600; margin-bottom: 0.35rem; }
+  .onboarding-sub { text-align: center; font-size: 0.8rem; color: var(--sf-text-secondary); margin-bottom: 1rem; }
   .onboarding-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.65rem 0;
+    padding: 0.65rem 0.5rem;
     border-bottom: 1px solid var(--sf-border);
     font-size: 0.9rem;
+    border-radius: var(--sf-radius-md);
+    margin-bottom: 0.35rem;
+    background: rgba(255,255,255,0.03);
   }
-  .onboarding-row:last-of-type { border-bottom: none; }
+  .onboarding-row:last-of-type { border-bottom: none; margin-bottom: 0; }
   .progress-bar {
     height: 4px;
     background: var(--sf-progress-bg);
     border-radius: 2px;
     margin-top: 1rem;
     overflow: hidden;
+    display: flex;
+    gap: 4px;
   }
-  .progress-fill {
+  .progress-segment {
+    flex: 1;
     height: 100%;
     border-radius: 2px;
-    background: var(--sf-progress-fill);
+    background: var(--sf-progress-bg);
+  }
+  .progress-segment.done { background: var(--sf-text-primary); }
+
+  /* === Step Indicator (gradient) === */
+  .step-indicator {
+    display: flex;
+    gap: 6px;
+    max-width: 360px;
+  }
+  .step-bar {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
   }
 
   /* === Bottom Navigation === */
@@ -404,6 +493,21 @@
     box-shadow: var(--sf-shadow-fab);
   }
 
+  /* === Form Section === */
+  .form-label {
+    font-size: 0.8rem;
+    color: var(--sf-text-secondary);
+    margin-bottom: 0.4rem;
+    display: block;
+  }
+  .form-label .required { color: var(--sf-red); }
+  .form-group { margin-bottom: 1rem; }
+  .form-row {
+    display: flex;
+    gap: 0.75rem;
+  }
+  .form-row > * { flex: 1; }
+
   /* === Typography === */
   .typo-row {
     display: flex;
@@ -418,16 +522,12 @@
     direction: ltr;
     text-align: left;
     min-width: 180px;
-    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
   }
 
   /* === Gradient Text — "SyncFlow" === */
-  .gradient-text-brand {
-    background: linear-gradient(135deg, #2dd4a8, #7c5bf5);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+  .brand-sync { color: var(--sf-text-primary); font-weight: 700; }
+  .brand-flow { color: var(--sf-teal); font-weight: 700; }
 
   /* === Alert === */
   .alert {
@@ -442,7 +542,40 @@
     color: var(--sf-red);
   }
 
-  /* === Spacing util === */
+  /* === Settings buttons (bottom of "עוד" page) === */
+  .settings-row {
+    display: flex;
+    gap: 0.5rem;
+    max-width: 500px;
+  }
+  .settings-btn {
+    flex: 1;
+    padding: 0.65rem 1rem;
+    border-radius: var(--sf-radius-md);
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: 1px solid var(--sf-border);
+    background: var(--sf-bg-card);
+    color: var(--sf-text-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  .settings-btn-small {
+    flex: 0;
+    padding: 0.65rem;
+    border-radius: var(--sf-radius-md);
+    border: 1px solid var(--sf-border);
+    background: var(--sf-bg-card);
+    color: var(--sf-text-muted);
+    cursor: pointer;
+    font-size: 1rem;
+  }
+
+  /* === Spacing === */
   .mt-1 { margin-top: 1rem; }
   .mb-1 { margin-bottom: 1rem; }
   .mt-2 { margin-top: 1.5rem; }
@@ -454,43 +587,43 @@
 
   <!-- === HEADER === -->
   <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
-    <span style="font-size: 1.5rem; font-weight: 700;" class="gradient-text-brand">SyncFlow</span>
-    <span style="font-size: 1.5rem; font-weight: 700;">— Design System</span>
+    <span style="font-size: 1.5rem;"><span class="brand-sync">Sync</span><span class="brand-flow">Flow</span></span>
+    <span style="font-size: 1.5rem; font-weight: 700;">— Design System v2</span>
   </div>
-  <p style="color: var(--sf-text-secondary); margin-bottom: 2rem; font-size: 0.85rem;">טוקנים וקומפוננטות שחולצו מ-16 מסכי האיפיון</p>
+  <p style="color: var(--sf-text-secondary); margin-bottom: 2rem; font-size: 0.85rem;">טוקנים וקומפוננטות — מעודכן לפי 19 מסכי איפיון</p>
 
 
-  <!-- ========== 1. COLORS — BACKGROUNDS ========== -->
+  <!-- ========== 1. BACKGROUNDS ========== -->
   <div class="section-title">1. צבעי רקע</div>
   <div class="swatch-grid">
     <div class="swatch">
       <div class="swatch-color" style="background: var(--sf-bg-deep); color: var(--sf-text-secondary);">Aa</div>
-      <div class="swatch-label">רקע ראשי<code>#0d0f1a — --sf-bg-deep</code></div>
+      <div class="swatch-label">רקע ראשי<code>#111428</code></div>
     </div>
     <div class="swatch">
       <div class="swatch-color" style="background: var(--sf-bg-card); color: var(--sf-text-secondary);">Aa</div>
-      <div class="swatch-label">כרטיס<code>#161a2e — --sf-bg-card</code></div>
+      <div class="swatch-label">כרטיס<code>#1a1e38</code></div>
     </div>
     <div class="swatch">
       <div class="swatch-color" style="background: var(--sf-bg-card-raised); color: var(--sf-text-secondary);">Aa</div>
-      <div class="swatch-label">כרטיס מורם<code>#1a1f38 — --sf-bg-card-raised</code></div>
+      <div class="swatch-label">כרטיס מורם<code>#1e2240</code></div>
     </div>
     <div class="swatch">
       <div class="swatch-color" style="background: var(--sf-bg-input); color: var(--sf-text-muted);">Aa</div>
-      <div class="swatch-label">שדה קלט<code>#1e2340 — --sf-bg-input</code></div>
-    </div>
-    <div class="swatch">
-      <div class="swatch-color" style="background: var(--sf-bg-table-header); color: var(--sf-text-secondary);">Aa</div>
-      <div class="swatch-label">Header טבלה<code>#1c2038 — --sf-bg-table-header</code></div>
+      <div class="swatch-label">שדה קלט<code>#161a30</code></div>
     </div>
     <div class="swatch">
       <div class="swatch-color" style="background: var(--sf-bg-muted); color: var(--sf-text-secondary);">Aa</div>
-      <div class="swatch-label">Muted<code>#232845 — --sf-bg-muted</code></div>
+      <div class="swatch-label">Muted / Hover<code>#252a4a</code></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--sf-bg-hover); color: var(--sf-text-secondary);">Aa</div>
+      <div class="swatch-label">Hover<code>#2a2f50</code></div>
     </div>
   </div>
 
 
-  <!-- ========== 2. COLORS — TEXT ========== -->
+  <!-- ========== 2. TEXT COLORS ========== -->
   <div class="section-title">2. צבעי טקסט</div>
   <div class="swatch-grid">
     <div class="swatch">
@@ -512,46 +645,62 @@
   </div>
 
 
-  <!-- ========== 3. COLORS — ACCENT ========== -->
-  <div class="section-title">3. צבעי Accent</div>
+  <!-- ========== 3. ACCENT COLORS ========== -->
+  <div class="section-title">3. צבעי Accent (מעודכן — 8 צבעים)</div>
   <div class="swatch-grid">
     <div class="swatch">
       <div class="swatch-color" style="background: var(--sf-primary); color: white;">Primary</div>
-      <div class="swatch-label">סגול ראשי<code>#7c5bf5 — --sf-primary</code></div>
+      <div class="swatch-label">סגול CTA<code>#7c5bf5</code></div>
     </div>
     <div class="swatch">
       <div class="swatch-color" style="background: var(--sf-primary-light); color: white;">Light</div>
-      <div class="swatch-label">סגול בהיר (subtitle)<code>#9b7ffc — --sf-primary-light</code></div>
+      <div class="swatch-label">סגול בהיר<code>#9b7ffc</code></div>
     </div>
     <div class="swatch">
-      <div class="swatch-color" style="background: var(--sf-teal); color: #0d0f1a;">Teal</div>
-      <div class="swatch-label">טורקיז (הושלמו / FAB)<code>#2dd4a8 — --sf-teal</code></div>
+      <div class="swatch-color" style="background: var(--sf-teal); color: #111428;">Teal</div>
+      <div class="swatch-label">טורקיז-ציאן<code>#2dd4bf</code></div>
     </div>
     <div class="swatch">
-      <div class="swatch-color" style="background: var(--sf-green); color: #0d0f1a;">Green</div>
-      <div class="swatch-label">ירוק (צ'קמרק)<code>#34d399 — --sf-green</code></div>
-    </div>
-    <div class="swatch">
-      <div class="swatch-color" style="background: var(--sf-red); color: white;">Red</div>
-      <div class="swatch-label">אדום-ורוד (פתוחות)<code>#f43f5e — --sf-red</code></div>
-    </div>
-    <div class="swatch">
-      <div class="swatch-color" style="background: var(--sf-amber); color: #0d0f1a;">Amber</div>
-      <div class="swatch-label">צהוב-כתום (XP)<code>#f59e0b — --sf-amber</code></div>
+      <div class="swatch-color" style="background: var(--sf-green); color: #111428;">Green</div>
+      <div class="swatch-label">ירוק<code>#34d399</code></div>
     </div>
     <div class="swatch">
       <div class="swatch-color" style="background: var(--sf-blue); color: white;">Blue</div>
-      <div class="swatch-label">כחול (ישיבות)<code>#3b82f6 — --sf-blue</code></div>
+      <div class="swatch-label">כחול<code>#3b82f6</code></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--sf-amber); color: #111428;">Amber</div>
+      <div class="swatch-label">זהב<code>#d4a020</code></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--sf-orange); color: #111428;">Orange</div>
+      <div class="swatch-label">כתום<code>#f59e0b</code></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--sf-pink); color: #111428;">Pink</div>
+      <div class="swatch-label">ורוד<code>#e879a8</code></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--sf-red); color: white;">Red</div>
+      <div class="swatch-label">אדום<code>#f43f5e</code></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--sf-gray); color: #111428;">Gray</div>
+      <div class="swatch-label">אפור<code>#8890a5</code></div>
     </div>
   </div>
 
-  <div class="section-subtitle">רקעי אייקונים (15% opacity)</div>
+  <div class="section-subtitle">רקעי אייקונים (18% opacity)</div>
   <div class="preview-row">
-    <div class="stat-icon" style="background: var(--sf-primary-bg); color: var(--sf-primary);">✓</div>
-    <div class="stat-icon" style="background: var(--sf-teal-bg); color: var(--sf-teal);">✅</div>
-    <div class="stat-icon" style="background: var(--sf-red-bg); color: var(--sf-red);">●</div>
-    <div class="stat-icon" style="background: var(--sf-amber-bg); color: var(--sf-amber);">★</div>
+    <div class="stat-icon" style="background: var(--sf-primary-bg); color: var(--sf-primary);">📋</div>
+    <div class="stat-icon" style="background: var(--sf-teal-bg); color: var(--sf-teal);">👥</div>
+    <div class="stat-icon" style="background: var(--sf-green-bg); color: var(--sf-green);">✅</div>
     <div class="stat-icon" style="background: var(--sf-blue-bg); color: var(--sf-blue);">📅</div>
+    <div class="stat-icon" style="background: var(--sf-amber-bg); color: var(--sf-amber);">🏆</div>
+    <div class="stat-icon" style="background: var(--sf-orange-bg); color: var(--sf-orange);">📈</div>
+    <div class="stat-icon" style="background: var(--sf-pink-bg); color: var(--sf-pink);">🧠</div>
+    <div class="stat-icon" style="background: var(--sf-red-bg); color: var(--sf-red);">●</div>
+    <div class="stat-icon" style="background: var(--sf-gray-bg); color: var(--sf-gray);">📦</div>
   </div>
 
 
@@ -564,9 +713,11 @@
     <div style="width: 70px; height: 70px; background: var(--sf-primary); border-radius: var(--sf-radius-xl); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: white;">xl<br>20px</div>
     <div style="width: 70px; height: 70px; background: var(--sf-primary); border-radius: var(--sf-radius-full); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: white;">full</div>
   </div>
-  <div class="preview-row mt-1">
-    <div style="width: 120px; height: 50px; border: 1px solid var(--sf-border); border-radius: var(--sf-radius-md); display: flex; align-items: center; justify-content: center; font-size: 0.7rem;">8% opacity</div>
-    <div style="width: 120px; height: 50px; border: 1px solid var(--sf-border-light); border-radius: var(--sf-radius-md); display: flex; align-items: center; justify-content: center; font-size: 0.7rem;">12% opacity</div>
+  <div class="section-subtitle">סוגי Borders</div>
+  <div class="preview-row">
+    <div style="width: 130px; height: 50px; border: 1px solid var(--sf-border); border-radius: var(--sf-radius-md); display: flex; align-items: center; justify-content: center; font-size: 0.7rem;">רגיל (10%)</div>
+    <div style="width: 130px; height: 50px; border: 1px solid var(--sf-border-light); border-radius: var(--sf-radius-md); display: flex; align-items: center; justify-content: center; font-size: 0.7rem;">מודגש (15%)</div>
+    <div style="width: 130px; height: 50px; border: 1px solid var(--sf-border-active); border-radius: var(--sf-radius-md); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; box-shadow: 0 0 12px rgba(45,212,191,0.15);">פעיל (ציאן)</div>
   </div>
 
 
@@ -578,7 +729,7 @@
   </div>
   <div class="typo-row">
     <span class="typo-meta">h2 — 22-24px / 600</span>
-    <span style="font-size: 1.4rem; font-weight: 600;">צעדים ראשונים 🚀</span>
+    <span style="font-size: 1.4rem; font-weight: 600;">ישיבה חדשה</span>
   </div>
   <div class="typo-row">
     <span class="typo-meta">h3 — 18px / 500</span>
@@ -590,19 +741,23 @@
   </div>
   <div class="typo-row">
     <span class="typo-meta">label — 13px / 500 secondary</span>
-    <span style="font-size: 0.8rem; font-weight: 500; color: var(--sf-text-secondary);">ישיבות השבוע</span>
+    <span style="font-size: 0.8rem; font-weight: 500; color: var(--sf-text-secondary);">שלב 2/4: פרטים</span>
   </div>
   <div class="typo-row">
     <span class="typo-meta">subtitle — 13px / 500 primary</span>
     <span style="font-size: 0.8rem; font-weight: 500; color: var(--sf-primary-light);">ניהול ומעקב</span>
   </div>
   <div class="typo-row">
-    <span class="typo-meta">brand — gradient</span>
-    <span class="gradient-text-brand" style="font-size: 1.5rem; font-weight: 700;">SyncFlow</span>
+    <span class="typo-meta">brand</span>
+    <span style="font-size: 1.5rem;"><span class="brand-sync">Sync</span><span class="brand-flow">Flow</span></span>
   </div>
   <div class="typo-row">
     <span class="typo-meta">stat — 28px / 700</span>
     <span style="font-size: 1.75rem; font-weight: 700;">42</span>
+  </div>
+  <div class="typo-row">
+    <span class="typo-meta">section label — 13px / 600</span>
+    <span style="font-size: 0.8rem; font-weight: 600; color: var(--sf-teal);">הצוות</span>
   </div>
 
 
@@ -611,65 +766,96 @@
   <div class="preview-row">
     <button class="btn btn-primary">+ הוסף משימה</button>
     <button class="btn btn-ghost">⏱ לוח עומסים</button>
+    <button class="btn btn-ghost">‹ הקודם</button>
     <button class="btn btn-destructive">מחיקה</button>
     <button class="btn-fab">+</button>
   </div>
-  <div class="section-note">FAB = gradient teal→purple + shadow</div>
 
 
-  <!-- ========== 7. BADGES ========== -->
-  <div class="section-title">7. Badges / Filter Tabs</div>
+  <!-- ========== 7. BADGES + TABS ========== -->
+  <div class="section-title">7. Badges / Tabs</div>
   <div class="preview-row mb-1">
     <span class="badge badge-primary">חדש</span>
     <span class="badge badge-ghost">ממתין (3)</span>
     <span class="badge badge-teal">הושלם</span>
     <span class="badge badge-red">דחוף</span>
   </div>
-  <div class="filter-tabs">
+
+  <div class="section-subtitle">Filter Tabs</div>
+  <div class="filter-tabs mb-1">
     <button class="filter-tab active">הכל</button>
     <button class="filter-tab">ממתין (0)</button>
     <button class="filter-tab">בתהליך (0)</button>
     <button class="filter-tab">הושלם (0)</button>
   </div>
 
+  <div class="section-subtitle">Toggle Tabs (ישיבה מובנית / פתוחה)</div>
+  <div class="toggle-tabs">
+    <button class="toggle-tab active">◉ ישיבה מובנית</button>
+    <button class="toggle-tab">🔓 ישיבה פתוחה</button>
+  </div>
 
-  <!-- ========== 8. INPUT ========== -->
-  <div class="section-title">8. שדות קלט</div>
-  <input class="input-field" type="text" placeholder="חפש משימות...">
-  <input class="input-field mt-1" type="text" value="משימה עם טקסט" style="margin-top: 0.75rem;">
+
+  <!-- ========== 8. STEP INDICATOR ========== -->
+  <div class="section-title">8. Step Indicator (gradient)</div>
+  <div class="section-note">4 שלבים — gradient מ-teal לסגול. השלב הפעיל מודגש.</div>
+  <div class="step-indicator mb-1">
+    <div class="step-bar" style="background: var(--sf-green); opacity: 0.4;"></div>
+    <div class="step-bar" style="background: var(--sf-blue); opacity: 0.4;"></div>
+    <div class="step-bar" style="background: var(--sf-primary);"></div>
+    <div class="step-bar" style="background: var(--sf-primary-light);"></div>
+  </div>
+  <div class="step-indicator">
+    <div class="step-bar" style="background: var(--sf-green); opacity: 0.4;"></div>
+    <div class="step-bar" style="background: var(--sf-blue);"></div>
+    <div class="step-bar" style="background: var(--sf-primary);"></div>
+    <div class="step-bar" style="background: var(--sf-primary-light); opacity: 0.3;"></div>
+  </div>
 
 
-  <!-- ========== 9. CARDS ========== -->
-  <div class="section-title">9. כרטיסים</div>
-
-  <div class="section-subtitle">Quick Action Cards (grid 2x2)</div>
-  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; max-width: 400px;" class="mb-1">
-    <div class="card" style="text-align: center;">
-      <div class="stat-icon" style="background: var(--sf-primary-bg); color: var(--sf-primary); margin-bottom: 0.5rem;">⚡</div>
-      <div class="card-title" style="font-size: 0.85rem;">ישיבה חדשה</div>
-      <div class="card-desc">אג'נדה עם AI</div>
+  <!-- ========== 9. INPUTS / FORM ========== -->
+  <div class="section-title">9. טפסים ושדות קלט</div>
+  <div style="max-width: 500px;">
+    <div class="form-group">
+      <label class="form-label">נושא <span class="required">*</span></label>
+      <input class="input-field" style="max-width: 100%;" type="text" value="שיחת 1:1">
     </div>
-    <div class="card" style="text-align: center;">
-      <div class="stat-icon" style="background: var(--sf-teal-bg); color: var(--sf-teal); margin-bottom: 0.5rem;">⚡</div>
-      <div class="card-title" style="font-size: 0.85rem;">משימות</div>
-      <div class="card-desc">0 פתוחות</div>
+    <div class="form-group">
+      <label class="form-label">מטרה / תוצאה נדרשת <span class="required">*</span></label>
+      <input class="input-field" style="max-width: 100%;" type="text" value="לאשר תוכנית פיתוח אישית ולהסיר חסמים">
     </div>
-    <div class="card" style="text-align: center;">
-      <div class="stat-icon" style="background: var(--sf-blue-bg); color: var(--sf-blue); margin-bottom: 0.5rem;">📅</div>
-      <div class="card-title" style="font-size: 0.85rem;">כל הישיבות</div>
-      <div class="card-desc">0 סה"כ</div>
+    <div class="form-group">
+      <label class="form-label">תוצאות נדרשות</label>
+      <textarea class="textarea" placeholder="פרט/י מה צריך להתקבל..."></textarea>
     </div>
-    <div class="card" style="text-align: center;">
-      <div class="stat-icon" style="background: var(--sf-amber-bg); color: var(--sf-amber); margin-bottom: 0.5rem;">📊</div>
-      <div class="card-title" style="font-size: 0.85rem;">ניתוח</div>
-      <div class="card-desc">Analytics</div>
+    <div class="form-group">
+      <label class="form-label">תקציר מנהל/ת</label>
+      <textarea class="textarea" placeholder="רקע, הקשר, מה כבר ידוע..."></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">רמת אתגר</label>
+        <input class="input-field" style="max-width: 100%;" type="text" value="בינוני">
+      </div>
+      <div class="form-group">
+        <label class="form-label">תאריך</label>
+        <input class="input-field" style="max-width: 100%;" type="text" value="10.03.2026">
+      </div>
+      <div class="form-group">
+        <label class="form-label">משך (ד')</label>
+        <input class="input-field" style="max-width: 100%;" type="text" value="60">
+      </div>
     </div>
   </div>
 
-  <div class="section-subtitle">Stat Cards</div>
-  <div class="preview-row">
+
+  <!-- ========== 10. CARDS ========== -->
+  <div class="section-title">10. כרטיסים</div>
+
+  <div class="section-subtitle">Stat Cards (2x2 grid)</div>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; max-width: 400px;" class="mb-1">
     <div class="stat-card">
-      <div class="stat-icon" style="background: var(--sf-primary-bg); color: var(--sf-primary);">✓</div>
+      <div class="stat-icon" style="background: var(--sf-primary-bg); color: var(--sf-primary);">☑</div>
       <div class="stat-number">0</div>
       <div class="stat-label">Action Items פתוחים</div>
     </div>
@@ -679,19 +865,19 @@
       <div class="stat-label">ישיבות השבוע</div>
     </div>
     <div class="stat-card">
-      <div class="stat-icon" style="background: var(--sf-amber-bg); color: var(--sf-amber);">★</div>
+      <div class="stat-icon" style="background: var(--sf-amber-bg); color: var(--sf-amber);">🏆</div>
       <div class="stat-number">0</div>
       <div class="stat-label">רמה 1 · XP</div>
     </div>
     <div class="stat-card">
-      <div class="stat-icon" style="background: var(--sf-teal-bg); color: var(--sf-teal);">📈</div>
+      <div class="stat-icon" style="background: var(--sf-green-bg); color: var(--sf-green);">📈</div>
       <div class="stat-number">0%</div>
       <div class="stat-label">% השלמה</div>
     </div>
   </div>
 
   <div class="section-subtitle">Summary Cards (3 cols)</div>
-  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; max-width: 500px;">
+  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; max-width: 500px;" class="mb-1">
     <div class="stat-card">
       <div class="stat-icon" style="background: var(--sf-teal-bg); color: var(--sf-teal);">📥</div>
       <div class="stat-number">0</div>
@@ -709,9 +895,107 @@
     </div>
   </div>
 
+  <div class="section-subtitle">Meeting Type Cards (2x grid)</div>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; max-width: 400px;" class="mb-1">
+    <div class="card" style="text-align: center; border-color: var(--sf-border-light);">
+      <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">📅</div>
+      <div class="card-title">סיכום שבועי</div>
+      <div class="card-desc">סטטוס שבועי</div>
+    </div>
+    <div class="card" style="text-align: center; border-color: var(--sf-border-light);">
+      <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🤝</div>
+      <div class="card-title">1:1</div>
+      <div class="card-desc">שיחה אישית</div>
+    </div>
+    <div class="card" style="text-align: center; border-color: var(--sf-border-light);">
+      <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">💡</div>
+      <div class="card-title">סיעור מוחות</div>
+      <div class="card-desc">יצירת רעיונות</div>
+    </div>
+    <div class="card" style="text-align: center; border-color: var(--sf-border-light);">
+      <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🏛️</div>
+      <div class="card-title">הנהלה</div>
+      <div class="card-desc">דיון עם הנהלה</div>
+    </div>
+    <div class="card" style="text-align: center; border-color: var(--sf-border-light);">
+      <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🔄</div>
+      <div class="card-title">רטרוספקטיבה</div>
+      <div class="card-desc">לקחים מהתקופה</div>
+    </div>
+    <div class="card" style="text-align: center; border-color: var(--sf-border-light);">
+      <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">⚡</div>
+      <div class="card-title">קבלת החלטה</div>
+      <div class="card-desc">הגעה להחלטה</div>
+    </div>
+  </div>
 
-  <!-- ========== 10. ONBOARDING ========== -->
-  <div class="section-title">10. Onboarding Card</div>
+
+  <!-- ========== 11. FEATURE CARDS (עוד) ========== -->
+  <div class="section-title">11. Feature Cards (מסך "עוד")</div>
+  <div class="section-note">כרטיסים עם אייקון צבעוני, מסודרים לפי קטגוריות. כרטיס פעיל מקבל border ציאן + glow.</div>
+
+  <div style="font-size: 0.8rem; font-weight: 600; color: var(--sf-teal); margin-bottom: 0.5rem;">הצוות</div>
+  <div class="feature-grid mb-1">
+    <div class="feature-card">
+      <div class="feat-icon" style="background: var(--sf-primary-bg); color: var(--sf-primary);">📋</div>
+      <div class="feat-title">ארגון</div>
+      <div class="feat-desc">מבנה ארגוני</div>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon" style="background: var(--sf-amber-bg); color: var(--sf-amber);">⏱</div>
+      <div class="feat-title">עומסים</div>
+      <div class="feat-desc">עומס וזמינות</div>
+    </div>
+    <div class="feature-card active">
+      <div class="feat-icon" style="background: var(--sf-teal-bg); color: var(--sf-teal);">👥</div>
+      <div class="feat-title">קשרים</div>
+      <div class="feat-desc">מפת אנשים</div>
+    </div>
+  </div>
+
+  <div style="font-size: 0.8rem; font-weight: 600; color: var(--sf-teal); margin-bottom: 0.5rem;">תובנות</div>
+  <div class="feature-grid mb-1">
+    <div class="feature-card">
+      <div class="feat-icon" style="background: var(--sf-orange-bg); color: var(--sf-orange);">📈</div>
+      <div class="feat-title">ציון</div>
+      <div class="feat-desc">ציון מנהיגות</div>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon" style="background: var(--sf-pink-bg); color: var(--sf-pink);">🧠</div>
+      <div class="feat-title">החלטות</div>
+      <div class="feat-desc">יומן החלטות</div>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon" style="background: var(--sf-green-bg); color: var(--sf-green);">📊</div>
+      <div class="feat-title">נתונים</div>
+      <div class="feat-desc">נתונים וטרנדים</div>
+    </div>
+  </div>
+
+  <div style="font-size: 0.8rem; font-weight: 600; color: var(--sf-teal); margin-bottom: 0.5rem;">כלים</div>
+  <div class="feature-grid mb-1" style="grid-template-columns: 1fr 1fr;">
+    <div class="feature-card">
+      <div class="feat-icon" style="background: var(--sf-gray-bg); color: var(--sf-gray);">📦</div>
+      <div class="feat-title">ארכיון</div>
+      <div class="feat-desc">ישיבות בארכיון</div>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon" style="background: var(--sf-primary-bg); color: var(--sf-primary-light);">⚡</div>
+      <div class="feat-title">אוטומציה</div>
+      <div class="feat-desc">כללים אוטומטיים</div>
+    </div>
+  </div>
+
+  <div class="section-subtitle">Settings Row (תחתית מסך "עוד")</div>
+  <div class="settings-row">
+    <div class="settings-btn-small">→</div>
+    <div class="settings-btn">👤 פרופיל</div>
+    <div class="settings-btn">⚙ הגדרות</div>
+  </div>
+
+
+  <!-- ========== 12. ONBOARDING ========== -->
+  <div class="section-title">12. Onboarding Card</div>
   <div class="onboarding-card" style="max-width: 420px;">
     <button class="close-btn">✕</button>
     <div class="onboarding-header">🚀 צעדים ראשונים</div>
@@ -728,12 +1012,16 @@
       <span style="color: var(--sf-text-muted);">‹</span>
       <span>הפעל/י אוטומציה ראשונה ⚡</span>
     </div>
-    <div class="progress-bar"><div class="progress-fill" style="width: 33%;"></div></div>
+    <div class="progress-bar">
+      <div class="progress-segment done"></div>
+      <div class="progress-segment"></div>
+      <div class="progress-segment"></div>
+    </div>
   </div>
 
 
-  <!-- ========== 11. TABLE ========== -->
-  <div class="section-title">11. טבלה + Empty State</div>
+  <!-- ========== 13. TABLE ========== -->
+  <div class="section-title">13. טבלה + Empty State</div>
   <div class="table-wrapper" style="max-width: 600px;">
     <table>
       <thead>
@@ -749,8 +1037,8 @@
   </div>
 
 
-  <!-- ========== 12. ALERTS ========== -->
-  <div class="section-title">12. Alerts</div>
+  <!-- ========== 14. ALERTS ========== -->
+  <div class="section-title">14. Alerts</div>
   <div class="alert mb-1" style="max-width: 500px;">
     ✨ &nbsp;לחצ/י "צור" לקבלת דוח AI אישי על השבוע
   </div>
@@ -759,41 +1047,32 @@
   </div>
 
 
-  <!-- ========== 13. BOTTOM NAV ========== -->
-  <div class="section-title">13. Bottom Navigation</div>
+  <!-- ========== 15. BOTTOM NAV ========== -->
+  <div class="section-title">15. Bottom Navigation</div>
   <div class="phone-frame" style="max-width: 400px;">
     <div class="phone-content">[תוכן הדף]</div>
     <div class="bottom-nav">
       <div class="nav-item"><div class="nav-icon">⋯</div>עוד</div>
       <div class="nav-item"><div class="nav-icon">👥</div>קשרים</div>
       <button class="nav-fab">+</button>
-      <div class="nav-item active"><div class="nav-icon">☑</div>משימות</div>
-      <div class="nav-item"><div class="nav-icon">📅</div>ישיבות</div>
+      <div class="nav-item"><div class="nav-icon">☑</div>משימות</div>
+      <div class="nav-item active"><div class="nav-icon">📅</div>ישיבות</div>
       <div class="nav-item"><div class="nav-icon">🏠</div>בית</div>
     </div>
   </div>
 
 
-  <!-- ========== 14. WEEKLY SUMMARY ========== -->
-  <div class="section-title">14. סיכום שבועי Card</div>
-  <div class="card" style="max-width: 420px;">
-    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-      <button class="btn btn-ghost" style="padding: 0.35rem 0.8rem; font-size: 0.8rem;">✨ צור</button>
-      <div style="text-align: left;">
-        <div style="font-size: 1rem; font-weight: 600;">סיכום שבועי</div>
-        <div style="font-size: 0.8rem; color: var(--sf-text-secondary);">דוח AI על השבוע האחרון</div>
-      </div>
-    </div>
-    <div style="color: var(--sf-text-muted); font-size: 0.85rem; margin-top: 1rem; text-align: center;">
-      לחצ/י "צור" לקבלת דוח AI אישי על השבוע
-    </div>
+  <!-- ========== 16. GRADIENTS ========== -->
+  <div class="section-title">16. Gradients</div>
+  <div class="preview-row">
+    <div style="width: 200px; height: 50px; background: var(--sf-gradient-fab); border-radius: var(--sf-radius-md); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8rem;">FAB (teal → purple)</div>
+    <div style="width: 200px; height: 50px; background: var(--sf-gradient-header); border-radius: var(--sf-radius-md); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8rem;">Header (purple)</div>
+    <div style="width: 200px; height: 50px; background: var(--sf-gradient-step); border-radius: var(--sf-radius-md); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8rem;">Step (green→blue→purple→pink)</div>
   </div>
 
 
-  <!-- ========== 15. ALL TOKENS TABLE ========== -->
-  <div class="section-title">15. סיכום כל הטוקנים</div>
-  <div class="section-note">טבלה מסכמת של כל ה-CSS variables</div>
-
+  <!-- ========== 17. TOKEN TABLE ========== -->
+  <div class="section-title">17. סיכום כל הטוקנים</div>
   <div id="tokens-table"></div>
 
 </div>
@@ -801,47 +1080,58 @@
 <script>
   const tokens = [
     ['רקעים', [
-      ['--sf-bg-deep', '#0d0f1a', 'רקע ראשי'],
-      ['--sf-bg-card', '#161a2e', 'כרטיסים'],
-      ['--sf-bg-card-raised', '#1a1f38', 'כרטיס מורם (onboarding)'],
-      ['--sf-bg-input', '#1e2340', 'שדות קלט'],
-      ['--sf-bg-table-header', '#1c2038', 'header טבלה'],
-      ['--sf-bg-muted', '#232845', 'muted / tabs לא פעילים'],
+      ['--sf-bg-deep', '#111428', 'רקע ראשי'],
+      ['--sf-bg-card', '#1a1e38', 'כרטיסים'],
+      ['--sf-bg-card-raised', '#1e2240', 'כרטיס מורם (onboarding, header)'],
+      ['--sf-bg-input', '#161a30', 'שדות קלט'],
+      ['--sf-bg-table-header', '#1c2040', 'header טבלה'],
+      ['--sf-bg-muted', '#252a4a', 'muted / filter tabs'],
+      ['--sf-bg-hover', '#2a2f50', 'hover state'],
     ]],
     ['טקסט', [
       ['--sf-text-primary', '#e8eaf0', 'טקסט ראשי'],
-      ['--sf-text-secondary', '#8b90a8', 'טקסט משני'],
-      ['--sf-text-muted', '#5c6180', 'placeholder / muted'],
-      ['--sf-text-white', '#ffffff', 'על כפתורים'],
+      ['--sf-text-secondary', '#8b90a8', 'labels / descriptions'],
+      ['--sf-text-muted', '#5c6180', 'placeholder / disabled'],
+      ['--sf-text-white', '#ffffff', 'על כפתורים צבעוניים'],
     ]],
-    ['Primary', [
-      ['--sf-primary', '#7c5bf5', 'סגול CTA ראשי'],
+    ['Primary (סגול)', [
+      ['--sf-primary', '#7c5bf5', 'CTA ראשי'],
       ['--sf-primary-hover', '#6b4ae0', 'hover'],
       ['--sf-primary-light', '#9b7ffc', 'subtitle / nav active'],
+      ['--sf-primary-bg', 'rgba(124,91,245,0.18)', 'רקע אייקון'],
     ]],
     ['Accent', [
-      ['--sf-teal', '#2dd4a8', 'טורקיז — FAB / הושלמו'],
-      ['--sf-green', '#34d399', 'ירוק — צ\'קמרק'],
-      ['--sf-red', '#f43f5e', 'אדום — פתוחות / destructive'],
-      ['--sf-amber', '#f59e0b', 'צהוב-כתום — XP'],
+      ['--sf-teal', '#2dd4bf', 'טורקיז-ציאן — FAB / קשרים / נתונים'],
+      ['--sf-green', '#34d399', 'ירוק — הושלמו / צ\'קמרק'],
       ['--sf-blue', '#3b82f6', 'כחול — ישיבות'],
+      ['--sf-amber', '#d4a020', 'זהב — XP / הישגים / עומסים'],
+      ['--sf-orange', '#f59e0b', 'כתום — ציון'],
+      ['--sf-pink', '#e879a8', 'ורוד — החלטות / מוח'],
+      ['--sf-red', '#f43f5e', 'אדום — פתוחות / destructive'],
+      ['--sf-gray', '#8890a5', 'אפור — ארכיון'],
     ]],
-    ['Border', [
-      ['--sf-border', 'rgba(255,255,255,0.08)', 'border רגיל'],
-      ['--sf-border-light', 'rgba(255,255,255,0.12)', 'border מודגש'],
+    ['Borders', [
+      ['--sf-border', 'rgba(255,255,255,0.10)', 'רגיל'],
+      ['--sf-border-light', 'rgba(255,255,255,0.15)', 'מודגש'],
+      ['--sf-border-active', 'rgba(45,212,191,0.5)', 'פעיל (ציאן glow)'],
     ]],
     ['Radius', [
       ['--sf-radius-sm', '8px', 'קטן'],
-      ['--sf-radius-md', '12px', 'בינוני (default)'],
-      ['--sf-radius-lg', '16px', 'גדול'],
-      ['--sf-radius-xl', '20px', 'XL (onboarding)'],
-      ['--sf-radius-full', '9999px', 'עגול (badge/icon)'],
+      ['--sf-radius-md', '12px', 'בינוני (ברירת מחדל)'],
+      ['--sf-radius-lg', '16px', 'גדול (כרטיסים)'],
+      ['--sf-radius-xl', '20px', 'XL (onboarding / phone)'],
+      ['--sf-radius-full', '9999px', 'עגול (badge / FAB)'],
+    ]],
+    ['Gradients', [
+      ['--sf-gradient-fab', 'teal → purple', 'FAB button'],
+      ['--sf-gradient-header', 'purple → light purple', 'Header banner / active tab'],
+      ['--sf-gradient-step', 'green→blue→purple→pink', 'Step indicator'],
     ]],
   ];
 
   const container = document.getElementById('tokens-table');
   tokens.forEach(([group, items]) => {
-    let html = `<h3 style="color: var(--sf-primary-light); margin: 1.25rem 0 0.5rem; font-size: 0.85rem;">${group}</h3>`;
+    let html = `<div style="color: var(--sf-primary-light); margin: 1.25rem 0 0.5rem; font-size: 0.85rem; font-weight: 600;">${group}</div>`;
     html += '<div style="border: 1px solid var(--sf-border); border-radius: 12px; overflow: hidden;">';
     html += '<table style="width: 100%; border-collapse: collapse;">';
     items.forEach((item, i) => {
@@ -849,10 +1139,10 @@
       const borderTop = i > 0 ? 'border-top: 1px solid var(--sf-border);' : '';
       html += `<tr style="${borderTop}">
         <td style="padding: 0.5rem 0.75rem; width: 30px;">
-          ${isColor ? `<span style="display:inline-block; width:20px; height:20px; border-radius:4px; background:${item[1]}; border:1px solid var(--sf-border-light);"></span>` : ''}
+          ${isColor ? `<span style="display:inline-block; width:20px; height:20px; border-radius:4px; background:${item[1]}; border:1px solid var(--sf-border-light);"></span>` : '—'}
         </td>
-        <td style="padding: 0.5rem 0; font-family: monospace; font-size: 0.78rem; direction: ltr;">${item[0]}</td>
-        <td style="padding: 0.5rem 0; font-family: monospace; font-size: 0.75rem; color: var(--sf-text-muted); direction: ltr;">${item[1]}</td>
+        <td style="padding: 0.5rem 0; font-family: monospace; font-size: 0.75rem; direction: ltr; white-space: nowrap;">${item[0]}</td>
+        <td style="padding: 0.5rem 0.5rem; font-family: monospace; font-size: 0.72rem; color: var(--sf-text-muted); direction: ltr;">${item[1]}</td>
         <td style="padding: 0.5rem 0.75rem; font-size: 0.78rem; color: var(--sf-text-secondary);">${item[2]}</td>
       </tr>`;
     });
