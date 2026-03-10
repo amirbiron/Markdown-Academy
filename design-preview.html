@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SyncFlow — Design System Preview (מהאיפיון)</title>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ===================================================
+     SyncFlow Design Tokens — חולצו מהמסכים (16 מסכים)
+     =================================================== */
+  :root {
+    /* --- רקעים --- */
+    --sf-bg-deep:        #0d0f1a;   /* רקע ראשי — הכי כהה */
+    --sf-bg-card:        #161a2e;   /* רקע כרטיסים */
+    --sf-bg-card-raised: #1a1f38;   /* כרטיס מורם (onboarding) */
+    --sf-bg-input:       #1e2340;   /* רקע שדות קלט / search */
+    --sf-bg-table-header:#1c2038;   /* header של טבלה */
+    --sf-bg-muted:       #232845;   /* רקע muted (filter tabs לא פעילים) */
+
+    /* --- טקסט --- */
+    --sf-text-primary:   #e8eaf0;   /* טקסט ראשי — לבן-אפרפר */
+    --sf-text-secondary: #8b90a8;   /* טקסט משני — אפור */
+    --sf-text-muted:     #5c6180;   /* טקסט muted — placeholder */
+    --sf-text-white:     #ffffff;   /* לבן מלא — על כפתורים */
+
+    /* --- Primary — סגול --- */
+    --sf-primary:        #7c5bf5;   /* סגול CTA ראשי */
+    --sf-primary-hover:  #6b4ae0;   /* hover */
+    --sf-primary-light:  #9b7ffc;   /* סגול בהיר — subtitle "ניהול ומעקב" */
+    --sf-primary-bg:     rgba(124, 91, 245, 0.15); /* רקע אייקון סגול */
+
+    /* --- Accent Colors — אייקוני סטטיסטיקה --- */
+    --sf-teal:           #2dd4a8;   /* ירוק-טורקיז — FAB, הושלמו */
+    --sf-teal-bg:        rgba(45, 212, 168, 0.15);
+    --sf-green:          #34d399;   /* ירוק — צ'קמרק */
+    --sf-green-bg:       rgba(52, 211, 153, 0.15);
+    --sf-red:            #f43f5e;   /* אדום-ורוד — פתוחות */
+    --sf-red-bg:         rgba(244, 63, 94, 0.15);
+    --sf-amber:          #f59e0b;   /* צהוב-כתום — XP */
+    --sf-amber-bg:       rgba(245, 158, 11, 0.15);
+    --sf-blue:           #3b82f6;   /* כחול — ישיבות */
+    --sf-blue-bg:        rgba(59, 130, 246, 0.15);
+
+    /* --- Borders --- */
+    --sf-border:         rgba(255, 255, 255, 0.08); /* border כללי */
+    --sf-border-light:   rgba(255, 255, 255, 0.12); /* border מודגש */
+
+    /* --- Radius --- */
+    --sf-radius-sm:      8px;
+    --sf-radius-md:      12px;
+    --sf-radius-lg:      16px;
+    --sf-radius-xl:      20px;
+    --sf-radius-full:    9999px;
+
+    /* --- Shadows --- */
+    --sf-shadow-card:    0 4px 16px rgba(0, 0, 0, 0.3);
+    --sf-shadow-fab:     0 4px 16px rgba(45, 212, 168, 0.3);
+
+    /* --- Gradient — FAB button --- */
+    --sf-gradient-fab:   linear-gradient(135deg, #2dd4a8, #7c5bf5);
+
+    /* --- Progress bar --- */
+    --sf-progress-bg:    #2a2f4a;
+    --sf-progress-fill:  #7c5bf5;
+  }
+
+  /* === Reset & Base === */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Rubik', system-ui, sans-serif;
+    background: var(--sf-bg-deep);
+    color: var(--sf-text-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* === Section Headers === */
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 2.5rem 0 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--sf-border-light);
+  }
+  .section-subtitle {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--sf-text-secondary);
+    margin: 1.5rem 0 0.75rem;
+  }
+  .section-note {
+    font-size: 0.8rem;
+    color: var(--sf-text-muted);
+    margin-bottom: 1rem;
+  }
+
+  /* === Color Swatches === */
+  .swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 0.75rem;
+  }
+  .swatch {
+    border-radius: var(--sf-radius-md);
+    overflow: hidden;
+    border: 1px solid var(--sf-border-light);
+  }
+  .swatch-color {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  .swatch-label {
+    padding: 0.5rem 0.65rem;
+    background: var(--sf-bg-card);
+    font-size: 0.78rem;
+  }
+  .swatch-label code {
+    display: block;
+    font-size: 0.68rem;
+    color: var(--sf-text-muted);
+    margin-top: 2px;
+    direction: ltr;
+    text-align: left;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+  }
+
+  /* === Preview Row === */
+  .preview-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  /* === Buttons === */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1.3rem;
+    border-radius: var(--sf-radius-md);
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn:active { transform: scale(0.97); }
+
+  .btn-primary {
+    background: var(--sf-primary);
+    color: var(--sf-text-white);
+  }
+  .btn-primary:hover { background: var(--sf-primary-hover); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--sf-text-primary);
+    border: 1px solid var(--sf-border-light);
+  }
+  .btn-ghost:hover { background: var(--sf-bg-muted); }
+
+  .btn-destructive {
+    background: var(--sf-red);
+    color: var(--sf-text-white);
+  }
+
+  .btn-fab {
+    width: 52px;
+    height: 52px;
+    border-radius: var(--sf-radius-full);
+    background: var(--sf-gradient-fab);
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: var(--sf-shadow-fab);
+  }
+
+  /* === Badges === */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.7rem;
+    border-radius: var(--sf-radius-full);
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  .badge-primary { background: var(--sf-primary); color: var(--sf-text-white); }
+  .badge-ghost { background: var(--sf-bg-muted); color: var(--sf-text-secondary); border: 1px solid var(--sf-border); }
+  .badge-teal { background: var(--sf-teal-bg); color: var(--sf-teal); }
+  .badge-red { background: var(--sf-red-bg); color: var(--sf-red); }
+
+  /* === Input === */
+  .input-field {
+    width: 100%;
+    max-width: 360px;
+    padding: 0.6rem 1rem;
+    border-radius: var(--sf-radius-md);
+    border: 1px solid var(--sf-border);
+    background: var(--sf-bg-input);
+    color: var(--sf-text-primary);
+    font-family: inherit;
+    font-size: 0.875rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .input-field:focus { border-color: var(--sf-primary); box-shadow: 0 0 0 2px rgba(124, 91, 245, 0.2); }
+  .input-field::placeholder { color: var(--sf-text-muted); }
+
+  /* === Card === */
+  .card {
+    background: var(--sf-bg-card);
+    border: 1px solid var(--sf-border);
+    border-radius: var(--sf-radius-lg);
+    padding: 1.25rem;
+    box-shadow: var(--sf-shadow-card);
+  }
+  .card-title { font-size: 1rem; font-weight: 600; margin-bottom: 0.35rem; }
+  .card-desc { font-size: 0.8rem; color: var(--sf-text-secondary); }
+
+  /* === Stat Card === */
+  .stat-card {
+    background: var(--sf-bg-card);
+    border: 1px solid var(--sf-border);
+    border-radius: var(--sf-radius-lg);
+    padding: 1.25rem;
+    text-align: center;
+    min-width: 130px;
+    box-shadow: var(--sf-shadow-card);
+  }
+  .stat-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: var(--sf-radius-full);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+  }
+  .stat-number { font-size: 1.75rem; font-weight: 700; }
+  .stat-label { font-size: 0.78rem; color: var(--sf-text-secondary); margin-top: 0.25rem; }
+
+  /* === Filter Tabs === */
+  .filter-tabs { display: flex; gap: 0.5rem; }
+  .filter-tab {
+    padding: 0.4rem 1rem;
+    border-radius: var(--sf-radius-full);
+    font-size: 0.8rem;
+    font-weight: 500;
+    border: 1px solid var(--sf-border);
+    background: transparent;
+    color: var(--sf-text-secondary);
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .filter-tab.active {
+    background: var(--sf-primary);
+    color: var(--sf-text-white);
+    border-color: var(--sf-primary);
+  }
+
+  /* === Table === */
+  .table-wrapper {
+    border: 1px solid var(--sf-border);
+    border-radius: var(--sf-radius-lg);
+    overflow: hidden;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    text-align: right;
+    padding: 0.75rem 1rem;
+    background: var(--sf-bg-table-header);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--sf-text-secondary);
+  }
+  td {
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--sf-border);
+    font-size: 0.85rem;
+  }
+  .empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--sf-text-muted);
+    font-size: 0.9rem;
+  }
+
+  /* === Onboarding Card === */
+  .onboarding-card {
+    background: var(--sf-bg-card-raised);
+    border: 1px solid var(--sf-border-light);
+    border-radius: var(--sf-radius-xl);
+    padding: 1.5rem;
+    position: relative;
+  }
+  .close-btn {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--sf-radius-full);
+    background: var(--sf-bg-muted);
+    border: none;
+    color: var(--sf-text-muted);
+    cursor: pointer;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .onboarding-header {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .onboarding-sub {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--sf-text-secondary);
+    margin-bottom: 1rem;
+  }
+  .onboarding-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid var(--sf-border);
+    font-size: 0.9rem;
+  }
+  .onboarding-row:last-of-type { border-bottom: none; }
+  .progress-bar {
+    height: 4px;
+    background: var(--sf-progress-bg);
+    border-radius: 2px;
+    margin-top: 1rem;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--sf-progress-fill);
+  }
+
+  /* === Bottom Navigation === */
+  .phone-frame {
+    max-width: 400px;
+    border: 1px solid var(--sf-border-light);
+    border-radius: var(--sf-radius-xl);
+    overflow: hidden;
+  }
+  .phone-content {
+    background: var(--sf-bg-deep);
+    padding: 2rem;
+    text-align: center;
+    color: var(--sf-text-muted);
+    font-size: 0.8rem;
+  }
+  .bottom-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: var(--sf-bg-card);
+    border-top: 1px solid var(--sf-border);
+    padding: 0.6rem 0 0.4rem;
+  }
+  .nav-item {
+    text-align: center;
+    font-size: 0.6rem;
+    color: var(--sf-text-muted);
+    cursor: pointer;
+  }
+  .nav-item.active { color: var(--sf-primary-light); }
+  .nav-icon { font-size: 1.2rem; margin-bottom: 2px; }
+  .nav-fab {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--sf-radius-full);
+    background: var(--sf-gradient-fab);
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-top: -1.2rem;
+    box-shadow: var(--sf-shadow-fab);
+  }
+
+  /* === Typography === */
+  .typo-row {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .typo-meta {
+    font-size: 0.7rem;
+    color: var(--sf-text-muted);
+    direction: ltr;
+    text-align: left;
+    min-width: 180px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+  }
+
+  /* === Gradient Text — "SyncFlow" === */
+  .gradient-text-brand {
+    background: linear-gradient(135deg, #2dd4a8, #7c5bf5);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* === Alert === */
+  .alert {
+    padding: 1rem 1.25rem;
+    border-radius: var(--sf-radius-md);
+    border: 1px solid var(--sf-border);
+    background: var(--sf-bg-card);
+    font-size: 0.85rem;
+  }
+  .alert-destructive {
+    border-color: rgba(244, 63, 94, 0.4);
+    color: var(--sf-red);
+  }
+
+  /* === Spacing util === */
+  .mt-1 { margin-top: 1rem; }
+  .mb-1 { margin-bottom: 1rem; }
+  .mt-2 { margin-top: 1.5rem; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- === HEADER === -->
+  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+    <span style="font-size: 1.5rem; font-weight: 700;" class="gradient-text-brand">SyncFlow</span>
+    <span style="font-size: 1.5rem; font-weight: 700;">— Design System</span>
+  </div>
+  <p style="color: var(--sf-text-secondary); margin-bottom: 2rem; font-size: 0.85rem;">טוקנים וקומפוננטות שחולצו מ-16 מסכי האיפיון</p>
+
+
+  <!-- ========== 1. COLORS — BACKGROUNDS ========== -->
+  <div class="section-title">1. צבעי רקע</div>
+  <div class="swatch-grid">
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--sf-bg-deep); color: var(--sf-text-secondary);">Aa</div>
+      <div class="swatch-label">רקע ראשי<code>#0d0f1a — --sf-bg-deep</code></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--sf-bg-card); color: var(--sf-text-secondary);">Aa</div>
+      <div class="swatch-label">כרטיס<code>#161a2e — --sf-bg-card</code></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--sf-bg-card-raised); color: var(--sf-text-secondary);">Aa</div>
+      <div class="swatch-label">כרטיס מורם<code>#1a1f38 — --sf-bg-card-raised</code></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--sf-bg-input); color: var(--sf-text-muted);">Aa</div>
+      <div class="swatch-label">שדה קלט<code>#1e2340 — --sf-bg-input</code></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--sf-bg-table-header); color: var(--sf-text-secondary);">Aa</div>
+      <div class="swatch-label">Header טבלה<code>#1c2038 — --sf-bg-table-header</code></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--sf-bg-muted); color: var(--sf-text-secondary);">Aa</div>
+      <div class="swatch-label">Muted<code>#232845 — --sf-bg-muted</code></div>
+    </div>
+  </div>
+
+
+  <!-- ========== 2. COLORS — TEXT ========== -->
+  <div class="section-title">2. צבעי טקסט</div>
+  <div class="swatch-grid">
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--sf-bg-card); color: var(--sf-text-primary);">Aa טקסט ראשי</div>
+      <div class="swatch-label">Primary<code>#e8eaf0</code></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--sf-bg-card); color: var(--sf-text-secondary);">Aa טקסט משני</div>
+      <div class="swatch-label">Secondary<code>#8b90a8</code></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--sf-bg-card); color: var(--sf-text-muted);">Aa placeholder</div>
+      <div class="swatch-label">Muted<code>#5c6180</code></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--sf-primary); color: white;">Aa לבן</div>
+      <div class="swatch-label">White (על כפתורים)<code>#ffffff</code></div>
+    </div>
+  </div>
+
+
+  <!-- ========== 3. COLORS — ACCENT ========== -->
+  <div class="section-title">3. צבעי Accent</div>
+  <div class="swatch-grid">
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--sf-primary); color: white;">Primary</div>
+      <div class="swatch-label">סגול ראשי<code>#7c5bf5 — --sf-primary</code></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--sf-primary-light); color: white;">Light</div>
+      <div class="swatch-label">סגול בהיר (subtitle)<code>#9b7ffc — --sf-primary-light</code></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--sf-teal); color: #0d0f1a;">Teal</div>
+      <div class="swatch-label">טורקיז (הושלמו / FAB)<code>#2dd4a8 — --sf-teal</code></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--sf-green); color: #0d0f1a;">Green</div>
+      <div class="swatch-label">ירוק (צ'קמרק)<code>#34d399 — --sf-green</code></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--sf-red); color: white;">Red</div>
+      <div class="swatch-label">אדום-ורוד (פתוחות)<code>#f43f5e — --sf-red</code></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--sf-amber); color: #0d0f1a;">Amber</div>
+      <div class="swatch-label">צהוב-כתום (XP)<code>#f59e0b — --sf-amber</code></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--sf-blue); color: white;">Blue</div>
+      <div class="swatch-label">כחול (ישיבות)<code>#3b82f6 — --sf-blue</code></div>
+    </div>
+  </div>
+
+  <div class="section-subtitle">רקעי אייקונים (15% opacity)</div>
+  <div class="preview-row">
+    <div class="stat-icon" style="background: var(--sf-primary-bg); color: var(--sf-primary);">✓</div>
+    <div class="stat-icon" style="background: var(--sf-teal-bg); color: var(--sf-teal);">✅</div>
+    <div class="stat-icon" style="background: var(--sf-red-bg); color: var(--sf-red);">●</div>
+    <div class="stat-icon" style="background: var(--sf-amber-bg); color: var(--sf-amber);">★</div>
+    <div class="stat-icon" style="background: var(--sf-blue-bg); color: var(--sf-blue);">📅</div>
+  </div>
+
+
+  <!-- ========== 4. BORDERS ========== -->
+  <div class="section-title">4. Borders & Radius</div>
+  <div class="preview-row">
+    <div style="width: 70px; height: 70px; background: var(--sf-primary); border-radius: var(--sf-radius-sm); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: white;">sm<br>8px</div>
+    <div style="width: 70px; height: 70px; background: var(--sf-primary); border-radius: var(--sf-radius-md); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: white;">md<br>12px</div>
+    <div style="width: 70px; height: 70px; background: var(--sf-primary); border-radius: var(--sf-radius-lg); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: white;">lg<br>16px</div>
+    <div style="width: 70px; height: 70px; background: var(--sf-primary); border-radius: var(--sf-radius-xl); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: white;">xl<br>20px</div>
+    <div style="width: 70px; height: 70px; background: var(--sf-primary); border-radius: var(--sf-radius-full); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: white;">full</div>
+  </div>
+  <div class="preview-row mt-1">
+    <div style="width: 120px; height: 50px; border: 1px solid var(--sf-border); border-radius: var(--sf-radius-md); display: flex; align-items: center; justify-content: center; font-size: 0.7rem;">8% opacity</div>
+    <div style="width: 120px; height: 50px; border: 1px solid var(--sf-border-light); border-radius: var(--sf-radius-md); display: flex; align-items: center; justify-content: center; font-size: 0.7rem;">12% opacity</div>
+  </div>
+
+
+  <!-- ========== 5. TYPOGRAPHY ========== -->
+  <div class="section-title">5. טיפוגרפיה (Rubik)</div>
+  <div class="typo-row">
+    <span class="typo-meta">h1 — 28-32px / 700</span>
+    <span style="font-size: 1.85rem; font-weight: 700;">ניהול משימות</span>
+  </div>
+  <div class="typo-row">
+    <span class="typo-meta">h2 — 22-24px / 600</span>
+    <span style="font-size: 1.4rem; font-weight: 600;">צעדים ראשונים 🚀</span>
+  </div>
+  <div class="typo-row">
+    <span class="typo-meta">h3 — 18px / 500</span>
+    <span style="font-size: 1.125rem; font-weight: 500;">הישיבה הבאה שלי</span>
+  </div>
+  <div class="typo-row">
+    <span class="typo-meta">body — 14-15px / 400</span>
+    <span style="font-size: 0.9rem;">מה בתוכנית להיום?</span>
+  </div>
+  <div class="typo-row">
+    <span class="typo-meta">label — 13px / 500 secondary</span>
+    <span style="font-size: 0.8rem; font-weight: 500; color: var(--sf-text-secondary);">ישיבות השבוע</span>
+  </div>
+  <div class="typo-row">
+    <span class="typo-meta">subtitle — 13px / 500 primary</span>
+    <span style="font-size: 0.8rem; font-weight: 500; color: var(--sf-primary-light);">ניהול ומעקב</span>
+  </div>
+  <div class="typo-row">
+    <span class="typo-meta">brand — gradient</span>
+    <span class="gradient-text-brand" style="font-size: 1.5rem; font-weight: 700;">SyncFlow</span>
+  </div>
+  <div class="typo-row">
+    <span class="typo-meta">stat — 28px / 700</span>
+    <span style="font-size: 1.75rem; font-weight: 700;">42</span>
+  </div>
+
+
+  <!-- ========== 6. BUTTONS ========== -->
+  <div class="section-title">6. כפתורים</div>
+  <div class="preview-row">
+    <button class="btn btn-primary">+ הוסף משימה</button>
+    <button class="btn btn-ghost">⏱ לוח עומסים</button>
+    <button class="btn btn-destructive">מחיקה</button>
+    <button class="btn-fab">+</button>
+  </div>
+  <div class="section-note">FAB = gradient teal→purple + shadow</div>
+
+
+  <!-- ========== 7. BADGES ========== -->
+  <div class="section-title">7. Badges / Filter Tabs</div>
+  <div class="preview-row mb-1">
+    <span class="badge badge-primary">חדש</span>
+    <span class="badge badge-ghost">ממתין (3)</span>
+    <span class="badge badge-teal">הושלם</span>
+    <span class="badge badge-red">דחוף</span>
+  </div>
+  <div class="filter-tabs">
+    <button class="filter-tab active">הכל</button>
+    <button class="filter-tab">ממתין (0)</button>
+    <button class="filter-tab">בתהליך (0)</button>
+    <button class="filter-tab">הושלם (0)</button>
+  </div>
+
+
+  <!-- ========== 8. INPUT ========== -->
+  <div class="section-title">8. שדות קלט</div>
+  <input class="input-field" type="text" placeholder="חפש משימות...">
+  <input class="input-field mt-1" type="text" value="משימה עם טקסט" style="margin-top: 0.75rem;">
+
+
+  <!-- ========== 9. CARDS ========== -->
+  <div class="section-title">9. כרטיסים</div>
+
+  <div class="section-subtitle">Quick Action Cards (grid 2x2)</div>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; max-width: 400px;" class="mb-1">
+    <div class="card" style="text-align: center;">
+      <div class="stat-icon" style="background: var(--sf-primary-bg); color: var(--sf-primary); margin-bottom: 0.5rem;">⚡</div>
+      <div class="card-title" style="font-size: 0.85rem;">ישיבה חדשה</div>
+      <div class="card-desc">אג'נדה עם AI</div>
+    </div>
+    <div class="card" style="text-align: center;">
+      <div class="stat-icon" style="background: var(--sf-teal-bg); color: var(--sf-teal); margin-bottom: 0.5rem;">⚡</div>
+      <div class="card-title" style="font-size: 0.85rem;">משימות</div>
+      <div class="card-desc">0 פתוחות</div>
+    </div>
+    <div class="card" style="text-align: center;">
+      <div class="stat-icon" style="background: var(--sf-blue-bg); color: var(--sf-blue); margin-bottom: 0.5rem;">📅</div>
+      <div class="card-title" style="font-size: 0.85rem;">כל הישיבות</div>
+      <div class="card-desc">0 סה"כ</div>
+    </div>
+    <div class="card" style="text-align: center;">
+      <div class="stat-icon" style="background: var(--sf-amber-bg); color: var(--sf-amber); margin-bottom: 0.5rem;">📊</div>
+      <div class="card-title" style="font-size: 0.85rem;">ניתוח</div>
+      <div class="card-desc">Analytics</div>
+    </div>
+  </div>
+
+  <div class="section-subtitle">Stat Cards</div>
+  <div class="preview-row">
+    <div class="stat-card">
+      <div class="stat-icon" style="background: var(--sf-primary-bg); color: var(--sf-primary);">✓</div>
+      <div class="stat-number">0</div>
+      <div class="stat-label">Action Items פתוחים</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background: var(--sf-blue-bg); color: var(--sf-blue);">📅</div>
+      <div class="stat-number">0</div>
+      <div class="stat-label">ישיבות השבוע</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background: var(--sf-amber-bg); color: var(--sf-amber);">★</div>
+      <div class="stat-number">0</div>
+      <div class="stat-label">רמה 1 · XP</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background: var(--sf-teal-bg); color: var(--sf-teal);">📈</div>
+      <div class="stat-number">0%</div>
+      <div class="stat-label">% השלמה</div>
+    </div>
+  </div>
+
+  <div class="section-subtitle">Summary Cards (3 cols)</div>
+  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; max-width: 500px;">
+    <div class="stat-card">
+      <div class="stat-icon" style="background: var(--sf-teal-bg); color: var(--sf-teal);">📥</div>
+      <div class="stat-number">0</div>
+      <div class="stat-label">סה"כ משימות</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background: var(--sf-red-bg); color: var(--sf-red);">●</div>
+      <div class="stat-number">0</div>
+      <div class="stat-label">פתוחות</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background: var(--sf-green-bg); color: var(--sf-green);">✅</div>
+      <div class="stat-number">0</div>
+      <div class="stat-label">הושלמו</div>
+    </div>
+  </div>
+
+
+  <!-- ========== 10. ONBOARDING ========== -->
+  <div class="section-title">10. Onboarding Card</div>
+  <div class="onboarding-card" style="max-width: 420px;">
+    <button class="close-btn">✕</button>
+    <div class="onboarding-header">🚀 צעדים ראשונים</div>
+    <div class="onboarding-sub">שלושה צעדים להתחלת עבודה עם SyncFlow</div>
+    <div class="onboarding-row">
+      <span style="color: var(--sf-text-muted);">‹</span>
+      <span>צור/י ישיבה ראשונה 🗓️</span>
+    </div>
+    <div class="onboarding-row">
+      <span style="color: var(--sf-text-muted);">‹</span>
+      <span>הוסף/י משימה ראשונה ✅</span>
+    </div>
+    <div class="onboarding-row">
+      <span style="color: var(--sf-text-muted);">‹</span>
+      <span>הפעל/י אוטומציה ראשונה ⚡</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width: 33%;"></div></div>
+  </div>
+
+
+  <!-- ========== 11. TABLE ========== -->
+  <div class="section-title">11. טבלה + Empty State</div>
+  <div class="table-wrapper" style="max-width: 600px;">
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 30px;">☐</th>
+          <th>תיאור המשימה</th>
+          <th>הוקצה ל-</th>
+          <th>תאריך יעד</th>
+        </tr>
+      </thead>
+    </table>
+    <div class="empty-state">אין משימות עדיין</div>
+  </div>
+
+
+  <!-- ========== 12. ALERTS ========== -->
+  <div class="section-title">12. Alerts</div>
+  <div class="alert mb-1" style="max-width: 500px;">
+    ✨ &nbsp;לחצ/י "צור" לקבלת דוח AI אישי על השבוע
+  </div>
+  <div class="alert alert-destructive" style="max-width: 500px;">
+    ⚠️ &nbsp;שגיאה בטעינת הנתונים
+  </div>
+
+
+  <!-- ========== 13. BOTTOM NAV ========== -->
+  <div class="section-title">13. Bottom Navigation</div>
+  <div class="phone-frame" style="max-width: 400px;">
+    <div class="phone-content">[תוכן הדף]</div>
+    <div class="bottom-nav">
+      <div class="nav-item"><div class="nav-icon">⋯</div>עוד</div>
+      <div class="nav-item"><div class="nav-icon">👥</div>קשרים</div>
+      <button class="nav-fab">+</button>
+      <div class="nav-item active"><div class="nav-icon">☑</div>משימות</div>
+      <div class="nav-item"><div class="nav-icon">📅</div>ישיבות</div>
+      <div class="nav-item"><div class="nav-icon">🏠</div>בית</div>
+    </div>
+  </div>
+
+
+  <!-- ========== 14. WEEKLY SUMMARY ========== -->
+  <div class="section-title">14. סיכום שבועי Card</div>
+  <div class="card" style="max-width: 420px;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+      <button class="btn btn-ghost" style="padding: 0.35rem 0.8rem; font-size: 0.8rem;">✨ צור</button>
+      <div style="text-align: left;">
+        <div style="font-size: 1rem; font-weight: 600;">סיכום שבועי</div>
+        <div style="font-size: 0.8rem; color: var(--sf-text-secondary);">דוח AI על השבוע האחרון</div>
+      </div>
+    </div>
+    <div style="color: var(--sf-text-muted); font-size: 0.85rem; margin-top: 1rem; text-align: center;">
+      לחצ/י "צור" לקבלת דוח AI אישי על השבוע
+    </div>
+  </div>
+
+
+  <!-- ========== 15. ALL TOKENS TABLE ========== -->
+  <div class="section-title">15. סיכום כל הטוקנים</div>
+  <div class="section-note">טבלה מסכמת של כל ה-CSS variables</div>
+
+  <div id="tokens-table"></div>
+
+</div>
+
+<script>
+  const tokens = [
+    ['רקעים', [
+      ['--sf-bg-deep', '#0d0f1a', 'רקע ראשי'],
+      ['--sf-bg-card', '#161a2e', 'כרטיסים'],
+      ['--sf-bg-card-raised', '#1a1f38', 'כרטיס מורם (onboarding)'],
+      ['--sf-bg-input', '#1e2340', 'שדות קלט'],
+      ['--sf-bg-table-header', '#1c2038', 'header טבלה'],
+      ['--sf-bg-muted', '#232845', 'muted / tabs לא פעילים'],
+    ]],
+    ['טקסט', [
+      ['--sf-text-primary', '#e8eaf0', 'טקסט ראשי'],
+      ['--sf-text-secondary', '#8b90a8', 'טקסט משני'],
+      ['--sf-text-muted', '#5c6180', 'placeholder / muted'],
+      ['--sf-text-white', '#ffffff', 'על כפתורים'],
+    ]],
+    ['Primary', [
+      ['--sf-primary', '#7c5bf5', 'סגול CTA ראשי'],
+      ['--sf-primary-hover', '#6b4ae0', 'hover'],
+      ['--sf-primary-light', '#9b7ffc', 'subtitle / nav active'],
+    ]],
+    ['Accent', [
+      ['--sf-teal', '#2dd4a8', 'טורקיז — FAB / הושלמו'],
+      ['--sf-green', '#34d399', 'ירוק — צ\'קמרק'],
+      ['--sf-red', '#f43f5e', 'אדום — פתוחות / destructive'],
+      ['--sf-amber', '#f59e0b', 'צהוב-כתום — XP'],
+      ['--sf-blue', '#3b82f6', 'כחול — ישיבות'],
+    ]],
+    ['Border', [
+      ['--sf-border', 'rgba(255,255,255,0.08)', 'border רגיל'],
+      ['--sf-border-light', 'rgba(255,255,255,0.12)', 'border מודגש'],
+    ]],
+    ['Radius', [
+      ['--sf-radius-sm', '8px', 'קטן'],
+      ['--sf-radius-md', '12px', 'בינוני (default)'],
+      ['--sf-radius-lg', '16px', 'גדול'],
+      ['--sf-radius-xl', '20px', 'XL (onboarding)'],
+      ['--sf-radius-full', '9999px', 'עגול (badge/icon)'],
+    ]],
+  ];
+
+  const container = document.getElementById('tokens-table');
+  tokens.forEach(([group, items]) => {
+    let html = `<h3 style="color: var(--sf-primary-light); margin: 1.25rem 0 0.5rem; font-size: 0.85rem;">${group}</h3>`;
+    html += '<div style="border: 1px solid var(--sf-border); border-radius: 12px; overflow: hidden;">';
+    html += '<table style="width: 100%; border-collapse: collapse;">';
+    items.forEach((item, i) => {
+      const isColor = item[1].startsWith('#') || item[1].startsWith('rgba');
+      const borderTop = i > 0 ? 'border-top: 1px solid var(--sf-border);' : '';
+      html += `<tr style="${borderTop}">
+        <td style="padding: 0.5rem 0.75rem; width: 30px;">
+          ${isColor ? `<span style="display:inline-block; width:20px; height:20px; border-radius:4px; background:${item[1]}; border:1px solid var(--sf-border-light);"></span>` : ''}
+        </td>
+        <td style="padding: 0.5rem 0; font-family: monospace; font-size: 0.78rem; direction: ltr;">${item[0]}</td>
+        <td style="padding: 0.5rem 0; font-family: monospace; font-size: 0.75rem; color: var(--sf-text-muted); direction: ltr;">${item[1]}</td>
+        <td style="padding: 0.5rem 0.75rem; font-size: 0.78rem; color: var(--sf-text-secondary);">${item[2]}</td>
+      </tr>`;
+    });
+    html += '</table></div>';
+    container.innerHTML += html;
+  });
+</script>
+
+</body>
+</html>
