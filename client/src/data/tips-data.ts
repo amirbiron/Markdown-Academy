@@ -487,7 +487,7 @@ https://github.com
 <mailto:example@email.com>
 
 ## תמונה כקישור
-[![Alt text](https://via.placeholder.com/100x30)](https://example.com)
+[![Alt text](https://placehold.co/100x30/1a1a2e/94a3b8?text=Click)](https://example.com)
 
 > **טיפ:** קישורי הפניה שומרים על המסמך נקי כשיש הרבה URLs.
 `,
@@ -545,13 +545,13 @@ https://github.com
     markdownExample: `# תמונות וגרפיקה ב-Markdown
 
 ## תמונה בסיסית
-![תיאור התמונה](https://via.placeholder.com/400x200)
+![תיאור התמונה](https://placehold.co/400x200/1a1a2e/94a3b8?text=400x200)
 
 ## תמונה עם כותרת
-![לוגו](https://via.placeholder.com/200x80 "כותרת בריחוף")
+![לוגו](https://placehold.co/200x80/1a1a2e/94a3b8?text=Logo "כותרת בריחוף")
 
 ## שליטה בגודל עם HTML
-<img src="https://via.placeholder.com/150x150" width="100" alt="תמונה קטנה">
+<img src="https://placehold.co/150x150/1a1a2e/94a3b8?text=150" width="100" alt="תמונה קטנה">
 
 ## Badges (תגיות סטטוס)
 Badges נפוצים ב-README של GitHub:
@@ -563,9 +563,9 @@ Badges נפוצים ב-README של GitHub:
 
 ## תמונות זו-לצד-זו (HTML)
 <p>
-<img src="https://via.placeholder.com/120x120" width="100">
-<img src="https://via.placeholder.com/120x120" width="100">
-<img src="https://via.placeholder.com/120x120" width="100">
+<img src="https://placehold.co/120x120/1a1a2e/94a3b8?text=Img" width="100">
+<img src="https://placehold.co/120x120/1a1a2e/94a3b8?text=Img" width="100">
+<img src="https://placehold.co/120x120/1a1a2e/94a3b8?text=Img" width="100">
 </p>
 
 > **טיפ:** לשליטה מדויקת בגודל, השתמשו בתגית \`<img>\` עם \`width\`.
@@ -574,6 +574,120 @@ Badges נפוצים ב-README של GitHub:
       { label: "תמונה", snippet: "![alt](url)", cursorOffset: 2 },
       { label: "Badge", snippet: "![label](https://img.shields.io/badge/label-value-color)", cursorOffset: 2 },
       { label: "תמונה + גודל", snippet: '<img src="url" width="300" alt="">', cursorOffset: 10 },
+    ],
+  },
+  {
+    id: "horizontal-rules",
+    title: "קווים מפרידים (HR)",
+    category: "formatting",
+    icon: "Minus",
+    description: "הפרדת חלקים במסמך עם קווים אופקיים בסגנונות שונים",
+    markdownExample: `# קווים מפרידים
+
+ניתן ליצור קו אופקי ב-3 דרכים:
+
+## שלוש מקפים
+---
+
+## שלוש כוכביות
+***
+
+## שלוש קווים תחתונים
+___
+
+## שימוש מעשי
+
+### סיכום פגישה
+
+**נושא:** תכנון ספרינט
+**תאריך:** 2024-01-15
+
+---
+
+**החלטות:**
+1. להתחיל עם ה-MVP
+2. לסיים עד סוף החודש
+
+---
+
+> **טיפ:** קו מפריד עוזר לארגן מסמכים ארוכים לחלקים ברורים.
+`,
+    injectSnippets: [
+      { label: "---", snippet: "\n---\n" },
+      { label: "***", snippet: "\n***\n" },
+    ],
+  },
+  {
+    id: "definition-lists",
+    title: "רשימות הגדרה (DL)",
+    category: "advanced",
+    icon: "BookOpen",
+    description: "הצגת מונחים והגדרותיהם בפורמט מילוני עם HTML",
+    markdownExample: `# רשימות הגדרה
+
+ב-HTML אפשר ליצור רשימות הגדרה מסודרות:
+
+<dl>
+<dt><strong>Markdown</strong></dt>
+<dd>שפת סימון קלה להמרת טקסט ל-HTML.</dd>
+
+<dt><strong>Git</strong></dt>
+<dd>מערכת ניהול גרסאות מבוזרת.</dd>
+
+<dt><strong>CI/CD</strong></dt>
+<dd>אינטגרציה רציפה ופריסה רציפה — תהליך אוטומטי לבדיקה ופריסה של קוד.</dd>
+</dl>
+
+## מילון מונחים
+
+<dl>
+<dt><code>npm install</code></dt>
+<dd>התקנת תלויות הפרויקט.</dd>
+
+<dt><code>npm run build</code></dt>
+<dd>בניית הפרויקט לפרודקשן.</dd>
+</dl>
+
+> **טיפ:** \`<dl>\`, \`<dt>\`, \`<dd>\` — שימושיים למילונים, FAQ, ותיעוד API.
+`,
+    injectSnippets: [
+      { label: "רשימת הגדרה", snippet: "<dl>\n<dt><strong>מונח</strong></dt>\n<dd>הגדרה</dd>\n</dl>", cursorOffset: 17 },
+    ],
+  },
+  {
+    id: "superscript-subscript",
+    title: "טקסט עליון ותחתון",
+    category: "advanced",
+    icon: "Superscript",
+    description: "כתב עילי (superscript) וכתב תחתי (subscript) עם HTML",
+    markdownExample: `# טקסט עליון ותחתון
+
+## כתב עילי (Superscript)
+נוסחה מתמטית: E = mc<sup>2</sup>
+
+הערת שוליים: טקסט חשוב<sup>[1]</sup>
+
+x<sup>2</sup> + y<sup>2</sup> = z<sup>2</sup>
+
+## כתב תחתי (Subscript)
+נוסחת מים: H<sub>2</sub>O
+
+פחמן דו-חמצני: CO<sub>2</sub>
+
+## שילוב בטבלה
+
+| נוסחה | שם |
+|:------|:---|
+| H<sub>2</sub>O | מים |
+| CO<sub>2</sub> | פחמן דו-חמצני |
+| O<sub>2</sub> | חמצן |
+| E=mc<sup>2</sup> | נוסחת אינשטיין |
+
+> **טיפ:** \`<sup>\` לכתב עילי, \`<sub>\` לכתב תחתי — עובד בכל Markdown שתומך ב-HTML.
+`,
+    injectSnippets: [
+      { label: "Superscript", snippet: "<sup>2</sup>", cursorOffset: 5 },
+      { label: "Subscript", snippet: "<sub>2</sub>", cursorOffset: 5 },
     ],
   },
 ];
