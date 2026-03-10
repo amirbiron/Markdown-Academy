@@ -8,6 +8,7 @@ import {
   EyeOff, Space, Type, LayoutList, Github, Wand2,
   SmilePlus, Link, Table, ImageIcon,
   Minus, BookOpen, Superscript,
+  GitBranch, Calculator, Anchor, ShieldAlert, FileCode,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -19,6 +20,7 @@ const iconMap: Record<string, LucideIcon> = {
   EyeOff, Space, Type, LayoutList, Github, Wand2,
   SmilePlus, Link, Table, ImageIcon,
   Minus, BookOpen, Superscript,
+  GitBranch, Calculator, Anchor, ShieldAlert, FileCode,
 };
 
 interface TipCardProps {
